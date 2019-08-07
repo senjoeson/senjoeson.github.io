@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用) | 时光,稍纵即逝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="记录某一个思想的沉淀">
+  
+  <meta name="description" content="前言 随着安卓开发的深入了解,越来越发现,很多看似简单的东西,在没有思路的情况下,盲目去写,会发现写到最后,连自己都感觉各种漏洞和问题. 其实这个问题也是我的亲身经历, 当初我在面对Listview和Checkbox控件的嵌套问题的时候,我发现我处理的很差,很多问题,而且有特别不好改,主要原因是自己的思路没有建立起来,去借鉴别人的代码,导致我很长时间都不敢再去动那个页面. 最近偶然一次机会,别人问">
+<meta name="keywords" content="安卓学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)">
+<meta property="og:url" content="http://blog.senjoeson.com/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/index.html">
+<meta property="og:site_name" content="时光,稍纵即逝">
+<meta property="og:description" content="前言 随着安卓开发的深入了解,越来越发现,很多看似简单的东西,在没有思路的情况下,盲目去写,会发现写到最后,连自己都感觉各种漏洞和问题. 其实这个问题也是我的亲身经历, 当初我在面对Listview和Checkbox控件的嵌套问题的时候,我发现我处理的很差,很多问题,而且有特别不好改,主要原因是自己的思路没有建立起来,去借鉴别人的代码,导致我很长时间都不敢再去动那个页面. 最近偶然一次机会,别人问">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:updated_time" content="2018-08-09T14:14:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)">
+<meta name="twitter:description" content="前言 随着安卓开发的深入了解,越来越发现,很多看似简单的东西,在没有思路的情况下,盲目去写,会发现写到最后,连自己都感觉各种漏洞和问题. 其实这个问题也是我的亲身经历, 当初我在面对Listview和Checkbox控件的嵌套问题的时候,我发现我处理的很差,很多问题,而且有特别不好改,主要原因是自己的思路没有建立起来,去借鉴别人的代码,导致我很长时间都不敢再去动那个页面. 最近偶然一次机会,别人问">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?true";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">三颗柚子</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a target="_blank" href="/">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                    
+                    <a target="_blank" href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>文章</span>
+                    </a>
+                    
+                    <a target="_blank" href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>关于我</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        三颗柚子
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        天生我才必有用
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="三颗柚子" target="_blank" href="//blog.senjoeson.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/senjoeson">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="senjoeson@foxmail.com" target="_blank" href="mailTo://senjoeson@foxmail.com">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                        <a title="简书" target="_blank" href="https://www.jianshu.com/u/4b6dda4129b2">
+                            <i class="fa fa-heart fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/安卓学习笔记/">安卓学习笔记</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2017-09-05
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p>随着安卓开发的深入了解,越来越发现,很多看似简单的东西,在没有思路的情况下,盲目去写,会发现写到最后,连自己都感觉各种漏洞和问题.</p>
+<p>其实这个问题也是我的亲身经历, 当初我在面对Listview和Checkbox控件的嵌套问题的时候,我发现我处理的很差,很多问题,而且有特别不好改,主要原因是自己的思路没有建立起来,去借鉴别人的代码,导致我很长时间都不敢再去动那个页面.</p>
+<p>最近偶然一次机会,别人问到过这个问题,我也是硬着头皮重新去回忆这个问题,突然发现,以前还是经验太少,不敢去面对自己出现的问题,现在我也跟大家分享一下我的心理历程和关于这个问题解决的心得.</p>
+<h2 id="问题点"><a href="#问题点" class="headerlink" title="问题点:"></a>问题点:</h2><h3 id="第一个-关于Listview和Checkbox的复用问题"><a href="#第一个-关于Listview和Checkbox的复用问题" class="headerlink" title="第一个:关于Listview和Checkbox的复用问题"></a>第一个:关于Listview和Checkbox的复用问题</h3><p>如果大家是第一次遇到这个问题的话,没有一个好的思路,确实是难以下手,在心理上就已经被吓怕了,其实是没有必要的,越是这样情况下,你越是要冷静,慢慢去理清头绪.<br>我们知道,listview的复用问题很常见,在这里我重点说下思路,要知道每个item里面都有一个chekcbox,如果我有20个item,我选中的第一个item的checkbox,那么下面一定会有一个item会跟第一个item进行复用,对吧?那怎么办呢?</p>
+<p>别急,为什么会产生这个问题,我们可以从三个地方思考:</p>
+<ul>
+<li><p>第一个,能不能不让条目复用?每一个都<code>独一无二</code>?</p>
+</li>
+<li><p>第二个,能不能只让checkbox不复用,item还是复用?</p>
+</li>
+<li><p>第三个,checkbox的选中状态也是一种数据(<code>true/false</code>),我能不能让数据不复用(<code>也就是具有唯一性</code>)?</p>
+</li>
+</ul>
+<hr>
+<h3 id="情况分析"><a href="#情况分析" class="headerlink" title="情况分析:"></a>情况分析:</h3><ul>
+<li><p>第一种情况,肯定不可取的,因为不进行复用,如果条目多了,会导致OOM.这可得不偿失.所以第一种情况是不可取的.</p>
+</li>
+<li><p>第二种情况,checkbox不复用,这种说法是不成立的,因为checkbox依附item中,没法做到让其中单独复用!</p>
+</li>
+<li><p>事实上,大家一看就知道第三种,就有很多种思路了把?就是让每个checkbox的选中状态的值都是唯一的,这样就不会导致复用的时候出现选一个而选多个的情况了!</p>
+</li>
+</ul>
+<p>下面我贴出我自己的写的一个例子,供大家参考!!<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAdapter</span> <span class="keyword">extends</span> <span class="title">MyBaseAdapter</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">       HashMap&lt;Integer, Boolean&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();    </span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">MyAdapter</span><span class="params">(List dataList)</span> </span>&#123;</span><br><span class="line">           <span class="keyword">super</span>(dataList);</span><br><span class="line">           initMap(dataList);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">/**</span></span><br><span class="line"><span class="comment">       *初始化map集合,将所有checkbox默认设置为false</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initMap</span><span class="params">(List dataList)</span> </span>&#123;      </span><br><span class="line">           <span class="keyword">if</span> (!dataList.isEmpty()) &#123;</span><br><span class="line">               <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; dataList.size(); i++) &#123;</span><br><span class="line">                   hashMap.put(i, <span class="keyword">false</span>);&#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> View <span class="title">getView</span><span class="params">(<span class="keyword">final</span> <span class="keyword">int</span> position, View convertView, ViewGroup parent)</span> </span>&#123;</span><br><span class="line">           ViewHolder holder;</span><br><span class="line">           <span class="keyword">if</span> (convertView == <span class="keyword">null</span>) &#123;</span><br><span class="line">               holder = <span class="keyword">new</span> ViewHolder();</span><br><span class="line">               convertView = View.inflate(UIUtils.getContext(), R.layout.item_listview, <span class="keyword">null</span>);</span><br><span class="line">               holder.mtv = (TextView) convertView.findViewById(R.id.textview);</span><br><span class="line">               holder.mCheckbox = (CheckBox) convertView.findViewById(R.id.checkbox);</span><br><span class="line">               convertView.setTag(holder);</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               holder = (ViewHolder) convertView.getTag();</span><br><span class="line">           &#125;</span><br><span class="line">           holder.mtv.setText(mDataList.get(position));</span><br><span class="line">           holder.mCheckbox.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">               <span class="meta">@Override</span></span><br><span class="line">               <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                   CheckBox checkbox = (CheckBox) v;</span><br><span class="line">                   <span class="keyword">if</span> (checkbox.isChecked()) &#123;</span><br><span class="line">                       hashMap.put(position,<span class="keyword">true</span>);<span class="comment">//每个position为唯一索引,进行存和取</span></span><br><span class="line">                   &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                       hashMap.put(position,<span class="keyword">false</span>);<span class="comment">//每个position为唯一索引,进行存和取</span></span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;);</span><br><span class="line">           holder.mCheckbox.setChecked(hashMap.get(position));      <span class="comment">//设置checkbox的状态</span></span><br><span class="line">           <span class="keyword">return</span> convertView;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span> </span>&#123;</span><br><span class="line">           CheckBox mCheckbox;</span><br><span class="line">           TextView mtv;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>item的布局很简单,就是一个checkbox和textview,以上主要实现的逻辑是:</p>
+<ul>
+<li>所有的checkbox状态都用一个map集合存起来</li>
+<li>在页面加载时候,在适配器的构造函数中需要对map集合进行初始化(所有的checkbox默认选中是false)</li>
+<li>当你点击checkbox的时候,我们去重新设置checkbox的状态,然后获取,这样就能够完美的解决复用问题了</li>
+</ul>
+<h3 id="第二个关于Listview和Checkbox的单选-多选问题"><a href="#第二个关于Listview和Checkbox的单选-多选问题" class="headerlink" title="第二个关于Listview和Checkbox的单选,多选问题"></a>第二个关于Listview和Checkbox的单选,多选问题</h3><p>我们刚刚解决了复用问题,相信大家对这个问题已经不再无从下手了.关于Listview和Checkbox的多选问题,其实上面的代码,完全不动就已经实现多选功能了,因此,可能对某些需求来讲,比如,我只想单选的话,多选可能是一个bug,(哈哈,开个玩笑!)</p>
+<p>我们重点说一下checkbox的单选问题.  其实这个问题也不难,看看你能不能够想通了~!  单选其实就是你在点击某个checkbox的时候,  让上次选中的状态全部变成false的状态对吧?  那么我们何时在点击选中的时候,就将每个checkbox的状态全部置为false呢?这样,  不管你选中还不选中,都能做到单向选择啦!!所以选择一个适当的时机很重要。</p>
+<p>因此我们只需要在这里加上2行代码就可以完美解决了!!!<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">holder.mCheckbox.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">              <span class="meta">@Override</span></span><br><span class="line">              <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                  CheckBox checkbox = (CheckBox) v;</span><br><span class="line">                  initMap(mDataList);    <span class="comment">//清空之前所有的选择</span></span><br><span class="line">                  notifyDataSetChanged();    <span class="comment">//刷新适配器</span></span><br><span class="line">                  <span class="keyword">if</span> (checkbox.isChecked()) &#123;</span><br><span class="line">                      hashMap.put(position,<span class="keyword">true</span>);</span><br><span class="line">                 &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                      hashMap.put(position,<span class="keyword">false</span>);</span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="第三个-关于Listview和Checkbox会抢占焦点的问题-也就是Checkbox的点击事件被拦截"><a href="#第三个-关于Listview和Checkbox会抢占焦点的问题-也就是Checkbox的点击事件被拦截" class="headerlink" title="第三个:关于Listview和Checkbox会抢占焦点的问题(也就是Checkbox的点击事件被拦截)"></a>第三个:关于Listview和Checkbox会抢占焦点的问题(也就是Checkbox的点击事件被拦截)</h3><p>如果有人会遇到这个问题,其实只要加一个属性就好了.就可以完美的解决checkbox点击和listview的点击事件会干扰的问题.<br>我们需要在item的根布局加上一个属性!!</p>
+<pre><code class="xml">android:descendantFocusability="blocksDescendants"
+</code></pre>
+<p>就可以完美解决了!!</p>
+<p>好了,关于Listview和Checkbox嵌套的问题就讲到这里,如果我说的这个解决方案能够帮助到你, 那么请给我点个赞把!如果我当前有写的不好的地方,欢迎指出!</p>
+<hr>
+<p>最后,感谢大家阅读本篇文章!</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2018年08月09日 22:14</p>
+        <p>原始链接： <a class="post-url" href="/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/" title="关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)">http://blog.senjoeson.com/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/</a></p>
+        <footer>
+            <a href="http://blog.senjoeson.com">
+                <img src="/images/logo.png" alt="三颗柚子">
+                三颗柚子
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我喝杯咖啡~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://blog.senjoeson.com/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/&title=《关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)》 — 时光,稍纵即逝&pic=http://blog.senjoeson.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.senjoeson.com/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/&title=《关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)》 — 时光,稍纵即逝&source=天生我才必有用" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.senjoeson.com/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)》 — 时光,稍纵即逝&url=http://blog.senjoeson.com/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/&via=http://blog.senjoeson.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://blog.senjoeson.com/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://blog.senjoeson.com/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/安卓学习笔记/" class="color2">安卓学习笔记</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#问题点"><span class="post-toc-text">问题点:</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第一个-关于Listview和Checkbox的复用问题"><span class="post-toc-text">第一个:关于Listview和Checkbox的复用问题</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#情况分析"><span class="post-toc-text">情况分析:</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第二个关于Listview和Checkbox的单选-多选问题"><span class="post-toc-text">第二个关于Listview和Checkbox的单选,多选问题</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第三个-关于Listview和Checkbox会抢占焦点的问题-也就是Checkbox的点击事件被拦截"><span class="post-toc-text">第三个:关于Listview和Checkbox会抢占焦点的问题(也就是Checkbox的点击事件被拦截)</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2017/11/28/关于动态权限申请遇到的坑/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          关于动态权限申请遇到的坑
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2017/09/01/学习观察者设计模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">学习观察者设计模式</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+    <script src="https://billts.site/js/gitment.js"></script>
+    <div id="comments">
+        <script>
+            var gitment = new Gitment({
+                owner: 'senjoeson',
+                repo: 'senjoeson.github.io',
+                oauth: {
+                    client_id: '8f69053f97e383c88e1b',
+                    client_secret: '7970c9c05959afe56624aa2502d264cbf8732da0',
+                },
+            })
+            gitment.render('comments')
+        </script>
+    </div>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 三颗柚子<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://blog.senjoeson.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/前端学习笔记/">前端学习笔记</a><a class="category-link" href="/categories/后台学习笔记/">后台学习笔记</a><a class="category-link" href="/categories/安卓学习笔记/">安卓学习笔记</a><a class="category-link" href="/categories/问题收集栏/">问题收集栏</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a target="_blank" href="/">
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/archives">
+                    <i class="fa fa-archive"></i><span>文章</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/about">
+                    <i class="fa fa-user"></i><span>关于我</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

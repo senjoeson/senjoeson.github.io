@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>如何用Idea配置最基本的web项目 | 时光,稍纵即逝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="记录某一个思想的沉淀">
+  
+  <meta name="description" content="前言   一直有着学习Java后台的想法,最近到年底了,正好手头上没事做,就来学习一下web项目,由于之前只学习过一点皮毛,所以,一切都从头开始学习吧!!   在学习的过程中,因为不太熟悉整个流程的配置,因此,在开始的时候花费了很多的时间去琢磨和练习,当然获得的经验,令人满意的!!    备注:首先用IDEA的原因是因为我之前用AS进行开发,用起来比较得心应有,并且IDEA是一个非常优秀的工具,提">
+<meta name="keywords" content="后台学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何用Idea配置最基本的web项目">
+<meta property="og:url" content="http://blog.senjoeson.com/2018/02/05/如何用Idea配置最基本的web项目/index.html">
+<meta property="og:site_name" content="时光,稍纵即逝">
+<meta property="og:description" content="前言   一直有着学习Java后台的想法,最近到年底了,正好手头上没事做,就来学习一下web项目,由于之前只学习过一点皮毛,所以,一切都从头开始学习吧!!   在学习的过程中,因为不太熟悉整个流程的配置,因此,在开始的时候花费了很多的时间去琢磨和练习,当然获得的经验,令人满意的!!    备注:首先用IDEA的原因是因为我之前用AS进行开发,用起来比较得心应有,并且IDEA是一个非常优秀的工具,提">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-879bb4a60f064578.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-e20d5a75ff50b0f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-9d05450913cff1c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-dbd7c68cf5397c0e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-7922c1e183b3cb4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-12a38adaeffaf365.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-eabc5f5fcd77acf3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-8aadf98e6a6ed227.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-87181ea6b459db0c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-517b08085dc2af31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-d4ed1e5b0fbedc82.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-c19e57897781e3ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-b121dc41c7e7a954.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-25cb32d1675179d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-6dbdea34eac2ccd6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-b157f4eb79a45c5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-464a23e728bd3a3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-fed48bba390a8e8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-08-09T14:14:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何用Idea配置最基本的web项目">
+<meta name="twitter:description" content="前言   一直有着学习Java后台的想法,最近到年底了,正好手头上没事做,就来学习一下web项目,由于之前只学习过一点皮毛,所以,一切都从头开始学习吧!!   在学习的过程中,因为不太熟悉整个流程的配置,因此,在开始的时候花费了很多的时间去琢磨和练习,当然获得的经验,令人满意的!!    备注:首先用IDEA的原因是因为我之前用AS进行开发,用起来比较得心应有,并且IDEA是一个非常优秀的工具,提">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/6693498-879bb4a60f064578.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?true";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">三颗柚子</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a target="_blank" href="/">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                    
+                    <a target="_blank" href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>文章</span>
+                    </a>
+                    
+                    <a target="_blank" href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>关于我</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        三颗柚子
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        天生我才必有用
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="三颗柚子" target="_blank" href="//blog.senjoeson.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/senjoeson">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="senjoeson@foxmail.com" target="_blank" href="mailTo://senjoeson@foxmail.com">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                        <a title="简书" target="_blank" href="https://www.jianshu.com/u/4b6dda4129b2">
+                            <i class="fa fa-heart fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-如何用Idea配置最基本的web项目" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      如何用Idea配置最基本的web项目
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/后台学习笔记/">后台学习笔记</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2018-02-05
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <p>前言</p>
+<hr>
+<blockquote>
+<p>一直有着学习Java后台的想法,最近到年底了,正好手头上没事做,就来学习一下web项目,由于之前只学习过一点皮毛,所以,一切都从头开始学习吧!!</p>
+</blockquote>
+<blockquote>
+<p>在学习的过程中,因为不太熟悉整个流程的配置,因此,在开始的时候花费了很多的时间去琢磨和练习,当然获得的经验,令人满意的!!</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>备注:首先用IDEA的原因是因为我之前用AS进行开发,用起来比较得心应有,并且IDEA是一个非常优秀的工具,提供很多便利,我也打听了很多人在用IDEA这个工具,所以,如果还在坚持用EC或者myEC,不妨来试试这个吧!</p>
+</blockquote>
+<p>首先我们用IDEA 创建一个Java web :</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-879bb4a60f064578.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建一个web工程.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-e20d5a75ff50b0f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="给项目取一个名字.png"></p>
+<p>然后点击Finished即可!</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-9d05450913cff1c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建完成后显示结果.png"></p>
+<p>拿到一个空白的项目.我们应该想到以下流程:</p>
+<blockquote>
+<p>配置web.xml<br>配置tomcat服务器</p>
+</blockquote>
+<hr>
+<p>那么到底是先配置tomcat服务器还是先配置web.xml呢?<br>经过多次的测试和操作,发现其实应该是先配置好web.xml,然后再进行配置tomcat,为什么这么说呢?我先埋个伏笔!<br>下面我先配置web.xml<br><img src="http://upload-images.jianshu.io/upload_images/6693498-dbd7c68cf5397c0e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="配置webxml.png"><br>点击添加会弹出这个对话框!拉到最底部,会发现有一个web<br><img src="http://upload-images.jianshu.io/upload_images/6693498-7922c1e183b3cb4f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加一个webxml.png"><br><img src="http://upload-images.jianshu.io/upload_images/6693498-12a38adaeffaf365.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-eabc5f5fcd77acf3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>在项目中添加一个web.xml文件,一般选择默认的就好,所以点击OK 即可添加成功!</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-8aadf98e6a6ed227.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="关于配置参数的说明.png"></p>
+<p>配置完成后的结果显示如下:<br><img src="http://upload-images.jianshu.io/upload_images/6693498-87181ea6b459db0c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="配置webxml完成的结果.png"></p>
+<p>ok,我们已经完成了web.xml配置,下面我们来配置Tomcat服务器吧!</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-517b08085dc2af31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>单击Edit Configuration 会弹出如下对话框!<br><img src="http://upload-images.jianshu.io/upload_images/6693498-d4ed1e5b0fbedc82.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>单击加号,选中Tomcat server 然后选中local 会弹出如下对话框!(备注:有人说没有找到Tomcat选项,你可以在上图中的”31 items more (…..)”)找找.</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-c19e57897781e3ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>细心的同学,发现了上图中其实报了一个错误<br><img src="http://upload-images.jianshu.io/upload_images/6693498-b121dc41c7e7a954.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<blockquote>
+<p>单击Fix按钮,会自动生成<br><img src="http://upload-images.jianshu.io/upload_images/6693498-25cb32d1675179d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>要知道 ,我们tomcat项目配置,可以直接放一个war包,即可以进行访问,因此需要添加一个war包!<br>这里单击OK 了就完成Tomcat配置了!<br>下面我们就可以启动我们的tomcat 了!<br><img src="http://upload-images.jianshu.io/upload_images/6693498-6dbdea34eac2ccd6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="启动Tomcat的结果.png"></p>
+</blockquote>
+<p>当你看到我这样结果,就证明你已经配置Tomcat成功了!</p>
+<hr>
+<p>有些人就郁闷了,你都讲完了配置,却没告诉我为什么要先配置Web.xml再配置Tomcat,这不是坑么?<br>老铁, 我想告诉你的是,先Tomcat配置,会出现这样的问题,<br><img src="http://upload-images.jianshu.io/upload_images/6693498-b157f4eb79a45c5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>它还是会提示你缺少了War包,还是得需要去先配置web.xml,然后进行生成!<br>按照EC以前敲代码的原则,是先撸完代码.然后再来配置服务器,因此,先配置web.xml 可以避免很多奇怪的问题!!</p>
+<hr>
+<p>下面简单的说一下最近遇到的坑:<br>1.关于配置servlet问题</p>
+<p> <img src="http://upload-images.jianshu.io/upload_images/6693498-464a23e728bd3a3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<blockquote>
+<p>servlet-class 里面这个值一定是带包名的全路径<br>    url-pattern 从名字上来看,url的匹配规则, 指的是通过根目录下的login路径,<br>      可以访问到Login.class(Login是一个servlet文件)</p>
+</blockquote>
+<p>2.关于jsp提交表单时候的action路径<br><img src="http://upload-images.jianshu.io/upload_images/6693498-fed48bba390a8e8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<blockquote>
+<p>我们先要从理论角度出发来看,这样可以不用让你被迷惑住,一个表单,肯定是要提交给一个servlet进行数据处<br>理的!那么action 肯定要定向到servlet的,这里的路径就要填写你生成的servlet路径中,不然是无法被扫描到的!!<br>否则你点击提交数据的时候 ,会一直出现 server500 这个错误!!</p>
+</blockquote>
+<p>有人说万事开头难,我真的是一直被难住在了开头,为了付出了几十个小时的代价去搞懂一些配置.不过最后的结果也是值得的!我对web项目有了一个基本的认识!</p>
+<p>希望把我遇到的一些问题和得到的一些经验,给大家分享一下 ,能够帮助到大家,由于很有很多东西不懂,如果你发现文中有错误,或者需要补充的地方,请给我留言,大家一起学习!</p>
+<p>最后感谢大家阅读本篇文章了!!</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2018年08月09日 22:14</p>
+        <p>原始链接： <a class="post-url" href="/2018/02/05/如何用Idea配置最基本的web项目/" title="如何用Idea配置最基本的web项目">http://blog.senjoeson.com/2018/02/05/如何用Idea配置最基本的web项目/</a></p>
+        <footer>
+            <a href="http://blog.senjoeson.com">
+                <img src="/images/logo.png" alt="三颗柚子">
+                三颗柚子
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我喝杯咖啡~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://blog.senjoeson.com/2018/02/05/如何用Idea配置最基本的web项目/&title=《如何用Idea配置最基本的web项目》 — 时光,稍纵即逝&pic=http://blog.senjoeson.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.senjoeson.com/2018/02/05/如何用Idea配置最基本的web项目/&title=《如何用Idea配置最基本的web项目》 — 时光,稍纵即逝&source=天生我才必有用" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.senjoeson.com/2018/02/05/如何用Idea配置最基本的web项目/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《如何用Idea配置最基本的web项目》 — 时光,稍纵即逝&url=http://blog.senjoeson.com/2018/02/05/如何用Idea配置最基本的web项目/&via=http://blog.senjoeson.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://blog.senjoeson.com/2018/02/05/如何用Idea配置最基本的web项目/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://blog.senjoeson.com/2018/02/05/如何用Idea配置最基本的web项目/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/后台学习笔记/" class="color2">后台学习笔记</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          关于在现有项目的集成NDK环境(ndk-build方式)
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2017/11/28/关于动态权限申请遇到的坑/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">关于动态权限申请遇到的坑</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+    <script src="https://billts.site/js/gitment.js"></script>
+    <div id="comments">
+        <script>
+            var gitment = new Gitment({
+                owner: 'senjoeson',
+                repo: 'senjoeson.github.io',
+                oauth: {
+                    client_id: '8f69053f97e383c88e1b',
+                    client_secret: '7970c9c05959afe56624aa2502d264cbf8732da0',
+                },
+            })
+            gitment.render('comments')
+        </script>
+    </div>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 三颗柚子<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://blog.senjoeson.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/前端学习笔记/">前端学习笔记</a><a class="category-link" href="/categories/后台学习笔记/">后台学习笔记</a><a class="category-link" href="/categories/安卓学习笔记/">安卓学习笔记</a><a class="category-link" href="/categories/问题收集栏/">问题收集栏</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a target="_blank" href="/">
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/archives">
+                    <i class="fa fa-archive"></i><span>文章</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/about">
+                    <i class="fa fa-user"></i><span>关于我</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

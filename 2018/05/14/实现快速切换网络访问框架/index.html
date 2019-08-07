@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>实现快速切换网络访问框架 | 时光,稍纵即逝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="记录某一个思想的沉淀">
+  
+  <meta name="description" content="前言最近在慢慢的看java的设计模式,作为一个安卓开发,了解设计模式是非常有必要的,对于你技术的沉淀和你对整体架构的设计都会提供一个非常好的思路今天我想和大家分享下以下知识点:  什么是代理模式? 代理模式的思考方式 代理模式能够做什么?(手写一个实现快速切换网络访问框架的例子)   我希望大家带着这三个问题,对设计模式进行一些学习和讨论, 首先我们来说下我们的第一个主题 什么是代理模式?先举个比">
+<meta name="keywords" content="安卓学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现快速切换网络访问框架">
+<meta property="og:url" content="http://blog.senjoeson.com/2018/05/14/实现快速切换网络访问框架/index.html">
+<meta property="og:site_name" content="时光,稍纵即逝">
+<meta property="og:description" content="前言最近在慢慢的看java的设计模式,作为一个安卓开发,了解设计模式是非常有必要的,对于你技术的沉淀和你对整体架构的设计都会提供一个非常好的思路今天我想和大家分享下以下知识点:  什么是代理模式? 代理模式的思考方式 代理模式能够做什么?(手写一个实现快速切换网络访问框架的例子)   我希望大家带着这三个问题,对设计模式进行一些学习和讨论, 首先我们来说下我们的第一个主题 什么是代理模式?先举个比">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:updated_time" content="2019-08-07T02:29:07.367Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实现快速切换网络访问框架">
+<meta name="twitter:description" content="前言最近在慢慢的看java的设计模式,作为一个安卓开发,了解设计模式是非常有必要的,对于你技术的沉淀和你对整体架构的设计都会提供一个非常好的思路今天我想和大家分享下以下知识点:  什么是代理模式? 代理模式的思考方式 代理模式能够做什么?(手写一个实现快速切换网络访问框架的例子)   我希望大家带着这三个问题,对设计模式进行一些学习和讨论, 首先我们来说下我们的第一个主题 什么是代理模式?先举个比">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?true";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">三颗柚子</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a target="_blank" href="/">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                    
+                    <a target="_blank" href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>文章</span>
+                    </a>
+                    
+                    <a target="_blank" href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>关于我</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        三颗柚子
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        天生我才必有用
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="三颗柚子" target="_blank" href="//blog.senjoeson.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/senjoeson">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="senjoeson@foxmail.com" target="_blank" href="mailTo://senjoeson@foxmail.com">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                        <a title="简书" target="_blank" href="https://www.jianshu.com/u/4b6dda4129b2">
+                            <i class="fa fa-heart fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-实现快速切换网络访问框架" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      实现快速切换网络访问框架
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/安卓学习笔记/">安卓学习笔记</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2018-05-14
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在慢慢的看java的设计模式,作为一个安卓开发,了解设计模式是非常有必要的,对于你技术的沉淀和你对整体架构的设计都会提供一个非常好的思路今天我想和大家分享下以下知识点:</p>
+<ul>
+<li><strong>什么是代理模式?</strong></li>
+<li><strong>代理模式的思考方式</strong></li>
+<li><strong>代理模式能够做什么?(手写一个实现快速切换网络访问框架的例子)</strong></li>
+</ul>
+<hr>
+<pre><code>我希望大家带着这三个问题,对设计模式进行一些学习和讨论, 首先我们来说下我们的第一个主题
+</code></pre><h3 id="什么是代理模式"><a href="#什么是代理模式" class="headerlink" title="什么是代理模式?"></a>什么是代理模式?</h3><p>先举个比较简单的例子, 我们通常买房的话,不会直接和房子的拥有者打交道,而是和房产中介或者说房产公司打交道,那么我们把这个过程剖析一下,我们可以简化为三个部分:</p>
+<ul>
+<li>买房者(真实想要买房子的人)</li>
+<li>中介(不能真实提供房子,但提供卖房行为)</li>
+<li>卖房者(真实提供房子的人,不提供卖房行为)</li>
+</ul>
+<hr>
+<p>*上面的逻辑就是一个完整代理模式的案例,我们可以从抽取的角度来思考代理模式:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">就像我们找工作一样, 我们通常不会直接去企业问是否能够提供相应的岗位, 而是通过一些招聘网站来获取一些</span><br><span class="line">企业的招聘信息, 这里的招聘网站就相当于是代理, 而求职者就是具备需要行为的对象,网站上的公司就是提供需</span><br><span class="line">要行为的对象,这样就能够有利的隔离面试者和公司在面试.*</span><br></pre></td></tr></table></figure></p>
+<h2 id="代理模式的思考方式"><a href="#代理模式的思考方式" class="headerlink" title="代理模式的思考方式"></a>代理模式的思考方式</h2><p> 当我们需要进行某一个行为的时候,我们不直接和具备这一行为的对象进行接触,而是通过一些方式,达到我们的目的, 一般来说,使用代理模式,都是想既要达到功能,又要能很好的进行隔离,作为程序员,我想应该可以解决很多时间问题, 特别是存在那种耦合非常强的代码中,使用代理模式能够有效隔离真实调用的代码,达到解耦合的效果!</p>
+<hr>
+<h2 id="代理模式能够做什么-手写一个实现快速切换网络访问框架的例子"><a href="#代理模式能够做什么-手写一个实现快速切换网络访问框架的例子" class="headerlink" title="代理模式能够做什么?(手写一个实现快速切换网络访问框架的例子)"></a>代理模式能够做什么?(手写一个实现快速切换网络访问框架的例子)</h2><p>还记得我们上面讲的三个对象么?</p>
+<ul>
+<li>买房者(真实想要买房子的人)</li>
+<li>中介(不能真实提供房子,但提供卖房行为)</li>
+<li>卖房者(真实提供房子的人,不提供卖房行为)</li>
+</ul>
+<h4 id="第一步-首先我们编写买房者的逻辑-主要体现的是行为"><a href="#第一步-首先我们编写买房者的逻辑-主要体现的是行为" class="headerlink" title="第一步,首先我们编写买房者的逻辑(主要体现的是行为)"></a>第一步,首先我们编写<strong>买房者的逻辑(主要体现的是行为)</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在代理模式中表示真实行为</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IHttpProcessor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">post</span><span class="params">(String url, Map&lt;String,Object&gt; params,ICallBack iCallBack)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">get</span><span class="params">(String url, Map&lt;String,Object&gt; params,ICallBack iCallBack)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 网络访问成功失败的回调</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ICallBack</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onSuccess</span><span class="params">(String result)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(String error)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="第二步-实现卖房者-主要真实提供房子-但不提供卖房行为-具体要交给中介"><a href="#第二步-实现卖房者-主要真实提供房子-但不提供卖房行为-具体要交给中介" class="headerlink" title="第二步,实现卖房者(主要真实提供房子,但不提供卖房行为,具体要交给中介)"></a>第二步,实现卖房者(主要真实提供房子,但不提供卖房行为,具体要交给中介)</h4><p>真实提供房子:这句话就是具备有行为,但是自己不执行这个行为<br>这里以Okhttp3网络访问为例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在代理模式中 表示真实提供者(必须具有目标行为能力)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OkhttpProcessor</span> <span class="keyword">implements</span> <span class="title">IHttpProcessor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> OkHttpClient mOkHttpClient;</span><br><span class="line">    <span class="keyword">public</span> Handler mHandler;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">static</span> String TAG = <span class="string">"OkhttpProcessor"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OkhttpProcessor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mOkHttpClient = <span class="keyword">new</span> OkHttpClient();</span><br><span class="line">        mHandler = <span class="keyword">new</span> Handler();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">post</span><span class="params">(String url, Map&lt;String, Object&gt; params, <span class="keyword">final</span> ICallBack iCallBack)</span> </span>&#123;</span><br><span class="line">        RequestBody requestBody = getRequestBody(params);</span><br><span class="line">        Request build = <span class="keyword">new</span> Request.Builder().post(requestBody).url(url).build();</span><br><span class="line">        mOkHttpClient.newCall(build).enqueue(<span class="keyword">new</span> Callback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(Call call, IOException e)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"onFailure: "</span> + e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(Call call, <span class="keyword">final</span> Response response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="keyword">boolean</span> successful = response.isSuccessful();</span><br><span class="line">                solveRespone(response, successful, iCallBack);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理响应体的结果</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> response 响应体</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> successful 成功</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> iCallBack  成功失败回调</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">solveRespone</span><span class="params">(<span class="keyword">final</span> Response response, <span class="keyword">final</span> <span class="keyword">boolean</span> successful, <span class="keyword">final</span> ICallBack iCallBack)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> String string = response.body().string();</span><br><span class="line">        mHandler.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (successful) &#123;</span><br><span class="line">                    iCallBack.onSuccess(string);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    iCallBack.onFailure(response.message());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 得到一个请求体</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> params 参数集合</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 拿到一个请求体</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> RequestBody <span class="title">getRequestBody</span><span class="params">(Map&lt;String, Object&gt; params)</span> </span>&#123;</span><br><span class="line">        FormBody.Builder builder = <span class="keyword">new</span> FormBody.Builder();</span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; objectEntry : params.entrySet()) &#123;</span><br><span class="line">            String key = objectEntry.getKey();</span><br><span class="line">            builder.add(key, objectEntry.getValue().toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> builder.build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">(String url, Map&lt;String, Object&gt; params, <span class="keyword">final</span> ICallBack iCallBack)</span> </span>&#123;</span><br><span class="line">        Request build = <span class="keyword">new</span> Request.Builder().get().url(url).build();</span><br><span class="line">        mOkHttpClient.newCall(build).enqueue(<span class="keyword">new</span> Callback() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(Call call, IOException e)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"onFailure: "</span> + e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResponse</span><span class="params">(Call call, <span class="keyword">final</span> Response response)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="keyword">boolean</span> successful = response.isSuccessful();</span><br><span class="line">                solveRespone(response, successful, iCallBack);  <span class="comment">//处理响应体的结果</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="第三步-实现中介-也就是就代理行为-而自己不具有真实行为的对象"><a href="#第三步-实现中介-也就是就代理行为-而自己不具有真实行为的对象" class="headerlink" title="第三步.实现中介(也就是就代理行为,而自己不具有真实行为的对象)"></a>第三步.实现中介(也就是就代理行为,而自己不具有真实行为的对象)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在代理模式中  处于中介 对于真实需求行为和真实行为提供者 进行集中代理</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpHelper</span> <span class="keyword">implements</span> <span class="title">IHttpProcessor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> IHttpProcessor mIHttpProcessor;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> HttpHelper instance;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Object&gt; mParams;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HttpHelper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mParams = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HttpHelper <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (HttpHelper.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> instance = <span class="keyword">new</span> HttpHelper();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(IHttpProcessor iHttpProcessor)</span> </span>&#123;</span><br><span class="line">        mIHttpProcessor = iHttpProcessor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">post</span><span class="params">(String url, Map&lt;String, Object&gt; params, ICallBack iCallBack)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//事实上 这里应该去对url进行拼接</span></span><br><span class="line">        mIHttpProcessor.post(url, params, iCallBack);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">get</span><span class="params">(String url, Map&lt;String, Object&gt; params, ICallBack iCallBack)</span> </span>&#123;</span><br><span class="line">        mIHttpProcessor.get(url, params, iCallBack);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大概的内容我们写完了, 但是现在有一个问题,卖房的人不止一个,有可能有甲乙丙丁甚至更多,那如何实现呢?<br>我贴一下用Volley 框架进行隔离的代码吧!<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 每个具体的processor都需要实现该方法具体的网络请求访问方式</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">public class VolleyProcessor implements IHttpProcessor &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public RequestQueue mRequestQueue = null;</span><br><span class="line"></span><br><span class="line">    public VolleyProcessor(Context context) &#123;</span><br><span class="line">        mRequestQueue = Volley.newRequestQueue(context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void post(String url, Map&lt;String, Object&gt; params, final ICallBack iCallBack) &#123;</span><br><span class="line"></span><br><span class="line">        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener&lt;String&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onResponse(String response) &#123;</span><br><span class="line">                iCallBack.onSuccess(response);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, new Response.ErrorListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onErrorResponse(VolleyError error) &#123;</span><br><span class="line">                iCallBack.onFailure(error.toString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        mRequestQueue.add(stringRequest);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void get(String url, Map&lt;String, Object&gt; params, final ICallBack iCallBack) &#123;</span><br><span class="line">        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener&lt;String&gt;() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onResponse(String response) &#123;</span><br><span class="line">                iCallBack.onSuccess(response);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, new Response.ErrorListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void onErrorResponse(VolleyError error) &#123;</span><br><span class="line">                iCallBack.onFailure(error.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        mRequestQueue.add(stringRequest);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因此,如果行为提供方(在这里我们说的行为是进行网络访问请求),okhttp3,volley都是提供网络访问请求的行为提供方,不再直接接触直接访问网络的逻辑,不再直接在P层或者说界面,而是通过中介类进行调用.</p>
+<hr>
+<p>代理模式讲到这里,不知道你是否对它熟悉了呢?  以上的代码是一些例子,还不完善.仅供各位参考.</p>
+<p>最后谢谢大家阅读本篇文章,如果你觉得文章对有所启发,或者对你帮助,请给我一颗红心吧!!</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2019年08月07日 10:29</p>
+        <p>原始链接： <a class="post-url" href="/2018/05/14/实现快速切换网络访问框架/" title="实现快速切换网络访问框架">http://blog.senjoeson.com/2018/05/14/实现快速切换网络访问框架/</a></p>
+        <footer>
+            <a href="http://blog.senjoeson.com">
+                <img src="/images/logo.png" alt="三颗柚子">
+                三颗柚子
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我喝杯咖啡~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://blog.senjoeson.com/2018/05/14/实现快速切换网络访问框架/&title=《实现快速切换网络访问框架》 — 时光,稍纵即逝&pic=http://blog.senjoeson.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.senjoeson.com/2018/05/14/实现快速切换网络访问框架/&title=《实现快速切换网络访问框架》 — 时光,稍纵即逝&source=天生我才必有用" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.senjoeson.com/2018/05/14/实现快速切换网络访问框架/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《实现快速切换网络访问框架》 — 时光,稍纵即逝&url=http://blog.senjoeson.com/2018/05/14/实现快速切换网络访问框架/&via=http://blog.senjoeson.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://blog.senjoeson.com/2018/05/14/实现快速切换网络访问框架/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://blog.senjoeson.com/2018/05/14/实现快速切换网络访问框架/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/安卓学习笔记/" class="color2">安卓学习笔记</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#什么是代理模式"><span class="post-toc-text">什么是代理模式?</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代理模式的思考方式"><span class="post-toc-text">代理模式的思考方式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代理模式能够做什么-手写一个实现快速切换网络访问框架的例子"><span class="post-toc-text">代理模式能够做什么?(手写一个实现快速切换网络访问框架的例子)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#第一步-首先我们编写买房者的逻辑-主要体现的是行为"><span class="post-toc-text">第一步,首先我们编写买房者的逻辑(主要体现的是行为)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#第二步-实现卖房者-主要真实提供房子-但不提供卖房行为-具体要交给中介"><span class="post-toc-text">第二步,实现卖房者(主要真实提供房子,但不提供卖房行为,具体要交给中介)</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#第三步-实现中介-也就是就代理行为-而自己不具有真实行为的对象"><span class="post-toc-text">第三步.实现中介(也就是就代理行为,而自己不具有真实行为的对象)</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2018/06/06/学习React-Native/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          学习React Native
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2018/05/08/原生安卓使用cordova制作插件教程/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">原生安卓使用cordova制作插件教程</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+    <script src="https://billts.site/js/gitment.js"></script>
+    <div id="comments">
+        <script>
+            var gitment = new Gitment({
+                owner: 'senjoeson',
+                repo: 'senjoeson.github.io',
+                oauth: {
+                    client_id: '8f69053f97e383c88e1b',
+                    client_secret: '7970c9c05959afe56624aa2502d264cbf8732da0',
+                },
+            })
+            gitment.render('comments')
+        </script>
+    </div>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 三颗柚子<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://blog.senjoeson.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/前端学习笔记/">前端学习笔记</a><a class="category-link" href="/categories/后台学习笔记/">后台学习笔记</a><a class="category-link" href="/categories/安卓学习笔记/">安卓学习笔记</a><a class="category-link" href="/categories/问题收集栏/">问题收集栏</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a target="_blank" href="/">
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/archives">
+                    <i class="fa fa-archive"></i><span>文章</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/about">
+                    <i class="fa fa-user"></i><span>关于我</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>原生安卓使用cordova制作插件教程 | 时光,稍纵即逝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="记录某一个思想的沉淀">
+  
+  <meta name="description" content="前言 写作目的：由于第一次接触制作插件过程，当中遇到很多问题不知道如何下手，写此教程也是为了给大家学习新的教程时，提供一些思路和解决方案， 也为了记录自己当初学习时出现的问题！   l 使用工具如下：Android studio  l 开发环境：基于Node.js  l 使用插件：cordova 、pluginman（生成插件工具）    第一步： 配置环境请先去安装好Node.js，然后安装好c">
+<meta name="keywords" content="前端学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生安卓使用cordova制作插件教程">
+<meta property="og:url" content="http://blog.senjoeson.com/2018/05/08/原生安卓使用cordova制作插件教程/index.html">
+<meta property="og:site_name" content="时光,稍纵即逝">
+<meta property="og:description" content="前言 写作目的：由于第一次接触制作插件过程，当中遇到很多问题不知道如何下手，写此教程也是为了给大家学习新的教程时，提供一些思路和解决方案， 也为了记录自己当初学习时出现的问题！   l 使用工具如下：Android studio  l 开发环境：基于Node.js  l 使用插件：cordova 、pluginman（生成插件工具）    第一步： 配置环境请先去安装好Node.js，然后安装好c">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6693498-b8ecc59e45b14f8d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6693498-ca226a7971e5bc80.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6693498-d0df78b0b6f89f13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6693498-d02369ed80b6bee2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/6693498-4d83b9f0fe45d9d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-08-09T14:14:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生安卓使用cordova制作插件教程">
+<meta name="twitter:description" content="前言 写作目的：由于第一次接触制作插件过程，当中遇到很多问题不知道如何下手，写此教程也是为了给大家学习新的教程时，提供一些思路和解决方案， 也为了记录自己当初学习时出现的问题！   l 使用工具如下：Android studio  l 开发环境：基于Node.js  l 使用插件：cordova 、pluginman（生成插件工具）    第一步： 配置环境请先去安装好Node.js，然后安装好c">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/6693498-b8ecc59e45b14f8d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?true";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">三颗柚子</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a target="_blank" href="/">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                    
+                    <a target="_blank" href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>文章</span>
+                    </a>
+                    
+                    <a target="_blank" href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>关于我</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        三颗柚子
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        天生我才必有用
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="三颗柚子" target="_blank" href="//blog.senjoeson.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/senjoeson">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="senjoeson@foxmail.com" target="_blank" href="mailTo://senjoeson@foxmail.com">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                        <a title="简书" target="_blank" href="https://www.jianshu.com/u/4b6dda4129b2">
+                            <i class="fa fa-heart fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-原生安卓使用cordova制作插件教程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      原生安卓使用cordova制作插件教程
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/前端学习笔记/">前端学习笔记</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2018-05-08
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+<p>写作目的：由于第一次接触制作插件过程，当中遇到很多问题不知道如何下手，写此教程也是为了给大家学习新的教程时，提供一些思路和解决方案， 也为了记录自己当初学习时出现的问题！</p>
+<hr>
+<ul>
+<li><p>l 使用工具如下：Android studio</p>
+</li>
+<li><p>l 开发环境：基于Node.js</p>
+</li>
+<li><p>l 使用插件：cordova 、pluginman（生成插件工具）</p>
+</li>
+</ul>
+<hr>
+<h2 id="第一步：-配置环境"><a href="#第一步：-配置环境" class="headerlink" title="第一步： 配置环境"></a>第一步： 配置环境</h2><p>请先去安装好Node.js，然后安装好cordova  如果不会安装请点击下面链接：<a href="http://cordova.axuer.com/" target="_blank" rel="noopener"><strong>http://cordova.axuer.com/</strong></a></p>
+<h2 id="第二步：默认你已经完成第一步，接下来我们创建一个Cordova项目"><a href="#第二步：默认你已经完成第一步，接下来我们创建一个Cordova项目" class="headerlink" title="第二步：默认你已经完成第一步，接下来我们创建一个Cordova项目"></a>第二步：默认你已经完成第一步，接下来我们创建一个Cordova项目</h2><p>创建项目的格式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cordova create [文件名] [包名]</span><br></pre></td></tr></table></figure></p>
+<p> 比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cordova create Demo com.senjoeson.demo</span><br></pre></td></tr></table></figure></p>
+<h2 id="第三步：添加你要生成哪个平台的插件"><a href="#第三步：添加你要生成哪个平台的插件" class="headerlink" title="第三步：添加你要生成哪个平台的插件"></a>第三步：添加你要生成哪个平台的插件</h2><p>首先我们进入该cordova项目，比如 cd demo</p>
+<p>注：如果你不知道当前有哪些平台，请执行cordova platform list</p>
+<p>我这里就先默认添加我们安卓平台吧</p>
+<p>Cordova platform add android</p>
+<p>##第四步：安装pluginman插件并创建一个插件</p>
+<p>安装很简单，就和安装cordova一样简单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install -g pluginman</span><br><span class="line"></span><br><span class="line">plugman create --name [名字]--plugin_id[包名]--plugin_version 1.0.0</span><br><span class="line"></span><br><span class="line">plugman create --name demo--plugin_id com.senjoeson.demo --plugin_version 1.0.0</span><br></pre></td></tr></table></figure></p>
+<p>创建插件的话 建议你不要创建在cordova项目中</p>
+<p>我们可以进行 <code>cd ..</code>进行退回到上一级目录</p>
+<h2 id="第四步-编写生成插件中的安卓代码"><a href="#第四步-编写生成插件中的安卓代码" class="headerlink" title="第四步 编写生成插件中的安卓代码"></a>第四步 编写生成插件中的安卓代码</h2><p>我们打开插件目录中的src目录，发现目录是空的，这里我们需要手动添加android目录<br>然后创建一个java文件，在java文件中，必须指定一个入口去继承CordovaPlugin<br><code>备注：插件就类似一个java程序，必须要有一个入口，当该入口被加载，才会去识别该程序的其他类或者方法等（本人是这么理解的！）</code></p>
+<p>比如：<br><img src="https://upload-images.jianshu.io/upload_images/6693498-b8ecc59e45b14f8d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>写到这里，我们插件的安卓代码已经完成了，但是插件目前还没有办法识别到我们写的java类和java方法，因此，我们需要在plugin.xml文件对我们写的东西进行声明</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6693498-ca226a7971e5bc80.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>完成plugin.xml修改后，按理说 ，插件部分算是完成了对吧？但是别忘记了，我们还没有去配置package.json，也就是该插件信息，没有这个文件，我们添加插件时会出现错误的！</p>
+<p>我们执行进入插件目录，执行 <strong>npm init</strong></p>
+<p>按照括号的提示写比如如下图，完成后，我们执行下一步。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6693498-d0df78b0b6f89f13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="第五步，添加插件到cordova项目并完成调用操作"><a href="#第五步，添加插件到cordova项目并完成调用操作" class="headerlink" title="第五步，添加插件到cordova项目并完成调用操作"></a>第五步，添加插件到cordova项目并完成调用操作</h2><ul>
+<li>1.<strong>添加插件到cordova项目中</strong></li>
+</ul>
+<p>记住两个命令：添加和删除插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cordova plugin add [插件路径]                   `添加是添加的插件路径`  </span><br><span class="line"></span><br><span class="line">Cordova plugin remove [包名]                     ` 移除是插件的包名`</span><br></pre></td></tr></table></figure></p>
+<p>添加插件的原理（针对安卓）：就是把我们自己做好的插件，添加到Android项目的assets目录中，因此每次修改了插件内容的话都需要移除并重新添加.</p>
+<ul>
+<li>2.<strong>完成调用操作</strong></li>
+</ul>
+<p>打开cordova项目，找到<code>www/index.html</code>,  index.html是这个<code>h5app</code>的入口，我们可以在里面随便写一个按钮,<br>  然后点击测试我们的插件是否被调用</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6693498-d02369ed80b6bee2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>重点：<strong>我们在插件的plugin.xml中声明的clobbers 两者一定要保持一致，否则一直会出现 无法“捕获到引用的错误” 错误。</strong></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/6693498-4d83b9f0fe45d9d2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>至此，教程完毕， 如果还有不懂的地方，欢迎大家留言给我，最后谢谢大家！</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2018年08月09日 22:14</p>
+        <p>原始链接： <a class="post-url" href="/2018/05/08/原生安卓使用cordova制作插件教程/" title="原生安卓使用cordova制作插件教程">http://blog.senjoeson.com/2018/05/08/原生安卓使用cordova制作插件教程/</a></p>
+        <footer>
+            <a href="http://blog.senjoeson.com">
+                <img src="/images/logo.png" alt="三颗柚子">
+                三颗柚子
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我喝杯咖啡~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://blog.senjoeson.com/2018/05/08/原生安卓使用cordova制作插件教程/&title=《原生安卓使用cordova制作插件教程》 — 时光,稍纵即逝&pic=http://blog.senjoeson.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.senjoeson.com/2018/05/08/原生安卓使用cordova制作插件教程/&title=《原生安卓使用cordova制作插件教程》 — 时光,稍纵即逝&source=天生我才必有用" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.senjoeson.com/2018/05/08/原生安卓使用cordova制作插件教程/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《原生安卓使用cordova制作插件教程》 — 时光,稍纵即逝&url=http://blog.senjoeson.com/2018/05/08/原生安卓使用cordova制作插件教程/&via=http://blog.senjoeson.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://blog.senjoeson.com/2018/05/08/原生安卓使用cordova制作插件教程/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://blog.senjoeson.com/2018/05/08/原生安卓使用cordova制作插件教程/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/前端学习笔记/" class="color2">前端学习笔记</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第一步：-配置环境"><span class="post-toc-text">第一步： 配置环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第二步：默认你已经完成第一步，接下来我们创建一个Cordova项目"><span class="post-toc-text">第二步：默认你已经完成第一步，接下来我们创建一个Cordova项目</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第三步：添加你要生成哪个平台的插件"><span class="post-toc-text">第三步：添加你要生成哪个平台的插件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第四步-编写生成插件中的安卓代码"><span class="post-toc-text">第四步 编写生成插件中的安卓代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第五步，添加插件到cordova项目并完成调用操作"><span class="post-toc-text">第五步，添加插件到cordova项目并完成调用操作</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2018/05/14/实现快速切换网络访问框架/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          实现快速切换网络访问框架
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2018/03/02/关于在现有项目的集成NDK环境(Cmake方式)/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">关于在现有项目的集成NDK环境(Cmake方式)</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+    <script src="https://billts.site/js/gitment.js"></script>
+    <div id="comments">
+        <script>
+            var gitment = new Gitment({
+                owner: 'senjoeson',
+                repo: 'senjoeson.github.io',
+                oauth: {
+                    client_id: '8f69053f97e383c88e1b',
+                    client_secret: '7970c9c05959afe56624aa2502d264cbf8732da0',
+                },
+            })
+            gitment.render('comments')
+        </script>
+    </div>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2019 三颗柚子<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://blog.senjoeson.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/前端学习笔记/">前端学习笔记</a><a class="category-link" href="/categories/后台学习笔记/">后台学习笔记</a><a class="category-link" href="/categories/安卓学习笔记/">安卓学习笔记</a><a class="category-link" href="/categories/问题收集栏/">问题收集栏</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a target="_blank" href="/">
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/archives">
+                    <i class="fa fa-archive"></i><span>文章</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/about">
+                    <i class="fa fa-user"></i><span>关于我</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
