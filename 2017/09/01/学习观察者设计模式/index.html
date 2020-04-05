@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>学习观察者设计模式 | 时光,稍纵即逝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="记录某一个思想的沉淀">
+  
+  <meta name="description" content="前言相信大家搞开发的,肯定对观察者模式会经常听说,本文就带着大家认识一下较为神秘的观察者模式吧. 观察者模式,顾名思义,一定会有一个观察者,和一个被观察者吧?OK,可能大家以为我又要和其他人讲的一样的. 那这样,我们下面来举个一个比较生动的例子.用最简单的方法介绍观察者模式吧! 介绍我们就拿我们比较关注的房价来说事吧!现在的房价涨的很快对不对?那么房价涨了你是怎么知道的?肯定是通过观察数据对比是吧">
+<meta name="keywords" content="安卓学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习观察者设计模式">
+<meta property="og:url" content="http://blog.senjoeson.com/2017/09/01/学习观察者设计模式/index.html">
+<meta property="og:site_name" content="时光,稍纵即逝">
+<meta property="og:description" content="前言相信大家搞开发的,肯定对观察者模式会经常听说,本文就带着大家认识一下较为神秘的观察者模式吧. 观察者模式,顾名思义,一定会有一个观察者,和一个被观察者吧?OK,可能大家以为我又要和其他人讲的一样的. 那这样,我们下面来举个一个比较生动的例子.用最简单的方法介绍观察者模式吧! 介绍我们就拿我们比较关注的房价来说事吧!现在的房价涨的很快对不对?那么房价涨了你是怎么知道的?肯定是通过观察数据对比是吧">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-174ce0a2d32ff425.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-9cc5084090d70959.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2020-04-05T12:13:44.829Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习观察者设计模式">
+<meta name="twitter:description" content="前言相信大家搞开发的,肯定对观察者模式会经常听说,本文就带着大家认识一下较为神秘的观察者模式吧. 观察者模式,顾名思义,一定会有一个观察者,和一个被观察者吧?OK,可能大家以为我又要和其他人讲的一样的. 那这样,我们下面来举个一个比较生动的例子.用最简单的方法介绍观察者模式吧! 介绍我们就拿我们比较关注的房价来说事吧!现在的房价涨的很快对不对?那么房价涨了你是怎么知道的?肯定是通过观察数据对比是吧">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/6693498-174ce0a2d32ff425.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?true";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">三颗柚子</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a target="_blank" href="/">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                    
+                    <a target="_blank" href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>文章</span>
+                    </a>
+                    
+                    <a target="_blank" href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>关于我</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        三颗柚子
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        天生我才必有用
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="三颗柚子" target="_blank" href="//blog.senjoeson.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/senjoeson">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="senjoeson@foxmail.com" target="_blank" href="mailTo://senjoeson@foxmail.com">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                        <a title="简书" target="_blank" href="https://www.jianshu.com/u/4b6dda4129b2">
+                            <i class="fa fa-heart fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-学习观察者设计模式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      学习观察者设计模式
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/安卓学习笔记/">安卓学习笔记</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2017-09-01
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>相信大家搞开发的,肯定对观察者模式会经常听说,本文就带着大家认识一下较为神秘的观察者模式吧. 观察者模式,顾名思义,一定会有一个观察者,和一个被观察者吧?OK,可能大家以为我又要和其他人讲的一样的. 那这样,我们下面来举个一个比较生动的例子.<br>用最简单的方法介绍观察者模式吧!</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>我们就拿我们比较关注的房价来说事吧!<br>现在的房价涨的很快对不对?那么房价涨了你是怎么知道的?肯定是通过观察数据对比是吧?那么这里的观察者就是我们,而且被观察者就是房价,观察的事件就是房价是否上涨.<br>我给大家列出了一个表格来简单描述这个过程的逻辑关系.</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-174ce0a2d32ff425.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>从这种图我们可以看出,其实观察者模式的逻辑关系就是这么简单.<br>如果觉得还不够理解透彻的话,那还是老规矩,看看咱们的代码吧!!</p>
+<p>首先我们创建一个Person类作为观察者,肯定是要实现Observer(这里的Observer是一个接口,所以需要去实现它)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Observer</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(Observable o, Object arg)</span> </span>&#123;		<span class="comment">//当观察到某件事情发生变化的时候,需要发生的变化</span></span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		<span class="keyword">if</span>(o <span class="keyword">instanceof</span> House&amp;&amp; arg <span class="keyword">instanceof</span> Double)&#123;		<span class="comment">//这里的意思是要区分被观察的对象和事件的属性,这里指的是价格的数值</span></span><br><span class="line">			speak();	<span class="comment">//当观察到某件事件发生,执行的方法</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">speak</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"房价又上涨啊!!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二步,创建一个House,作为被观察者,需要继承Observable<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">House</span> <span class="keyword">extends</span> <span class="title">Observable</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> price;</span><br><span class="line">	<span class="function"><span class="keyword">public</span>	 <span class="title">House</span><span class="params">(<span class="keyword">double</span> price)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.price=price;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrice</span><span class="params">( <span class="keyword">double</span> newPrice)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(price&lt;newPrice)&#123;      <span class="comment">//当房价大于之前的价格,表示房价上涨</span></span><br><span class="line">			setChanged();      <span class="comment">//设置了变化并且通知观察者   </span></span><br><span class="line">			notifyObservers(newPrice);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">this</span>.price=newPrice;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第三步,我们直接运行并且看看结果把!!</p>
+<p><code>`</code>java<br>    public static void main(String[] args) {</p>
+<pre><code>    House house = new House(19000.00); // 原来的价格
+    house.addObserver(new Person()); // 被观察者需要和观察者进行绑定
+    house.setPrice(20000.0); // 新的价格来了
+}
+</code></pre><p>最后,贴出执行结果:</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-9cc5084090d70959.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>不知道大家看到这里,是不是会对观察者模式有一个非常清晰的认识呢?<br>如果还有不懂的地方的话,请给我留言!<br>今天的知识分享就讲到这里吧!</p>
+<p>最后谢谢大家的阅读本篇文章!</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2020年04月05日 20:13</p>
+        <p>原始链接： <a class="post-url" href="/2017/09/01/学习观察者设计模式/" title="学习观察者设计模式">http://blog.senjoeson.com/2017/09/01/学习观察者设计模式/</a></p>
+        <footer>
+            <a href="http://blog.senjoeson.com">
+                <img src="/images/logo.png" alt="三颗柚子">
+                三颗柚子
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我喝杯咖啡~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://blog.senjoeson.com/2017/09/01/学习观察者设计模式/&title=《学习观察者设计模式》 — 时光,稍纵即逝&pic=http://blog.senjoeson.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.senjoeson.com/2017/09/01/学习观察者设计模式/&title=《学习观察者设计模式》 — 时光,稍纵即逝&source=天生我才必有用" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.senjoeson.com/2017/09/01/学习观察者设计模式/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《学习观察者设计模式》 — 时光,稍纵即逝&url=http://blog.senjoeson.com/2017/09/01/学习观察者设计模式/&via=http://blog.senjoeson.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://blog.senjoeson.com/2017/09/01/学习观察者设计模式/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://blog.senjoeson.com/2017/09/01/学习观察者设计模式/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/安卓学习笔记/" class="color2">安卓学习笔记</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#介绍"><span class="post-toc-text">介绍</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2017/09/05/关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          关于Listview和Checkbox控件嵌套出现的各种问题(Recyclerview也适用)
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2017/08/30/关于建造者模式-builder模式-学习心得/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">关于建造者模式(builder模式)学习心得</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+    <script src="https://billts.site/js/gitment.js"></script>
+    <div id="comments">
+        <script>
+            var gitment = new Gitment({
+                id: 'Fri Sep 01 2017 09:20:00 GMT+0800',
+                owner: 'senjoeson',
+                repo: 'senjoeson.github.io',
+                oauth: {
+                    client_id: '2b34b65aa0b25d96f85b',
+                    client_secret: '308846c5d6a6c2b73875a745d2cdab7da0de9867',
+                },
+            })
+            gitment.render('comments')
+        </script>
+    </div>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2020 三颗柚子<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://blog.senjoeson.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/前端学习笔记/">前端学习笔记</a><a class="category-link" href="/categories/后台学习笔记/">后台学习笔记</a><a class="category-link" href="/categories/安卓学习笔记/">安卓学习笔记</a><a class="category-link" href="/categories/小程序系列/">小程序系列</a><a class="category-link" href="/categories/问题收集栏/">问题收集栏</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/小程序系列/" style="font-size: 10px;">小程序系列</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a target="_blank" href="/">
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/archives">
+                    <i class="fa fa-archive"></i><span>文章</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/about">
+                    <i class="fa fa-user"></i><span>关于我</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/小程序系列/" style="font-size: 10px;">小程序系列</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

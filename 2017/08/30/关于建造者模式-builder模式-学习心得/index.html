@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>关于建造者模式(builder模式)学习心得 | 时光,稍纵即逝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="记录某一个思想的沉淀">
+  
+  <meta name="description" content="前言如果你还对builder模式一无所知,还不知道如何去使用的话,我想我这篇文章能够带你对这个模式有一个基础的认识.本文仅针对建造者模式的初学者分享.高手可以自行绕道.相信大家一定在平常编写代码的时候,遇到过builder模式,因为这个模式用起来非常简洁.几乎可以一句代码搞定需要设置的参数, 得到一个实例.大大的方便了使用者编写代码的速度.相信用过比较流行的网络框架,图片加载框架的童鞋,一定用过.">
+<meta name="keywords" content="安卓学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于建造者模式(builder模式)学习心得">
+<meta property="og:url" content="http://blog.senjoeson.com/2017/08/30/关于建造者模式-builder模式-学习心得/index.html">
+<meta property="og:site_name" content="时光,稍纵即逝">
+<meta property="og:description" content="前言如果你还对builder模式一无所知,还不知道如何去使用的话,我想我这篇文章能够带你对这个模式有一个基础的认识.本文仅针对建造者模式的初学者分享.高手可以自行绕道.相信大家一定在平常编写代码的时候,遇到过builder模式,因为这个模式用起来非常简洁.几乎可以一句代码搞定需要设置的参数, 得到一个实例.大大的方便了使用者编写代码的速度.相信用过比较流行的网络框架,图片加载框架的童鞋,一定用过.">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:updated_time" content="2020-04-05T12:13:44.828Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于建造者模式(builder模式)学习心得">
+<meta name="twitter:description" content="前言如果你还对builder模式一无所知,还不知道如何去使用的话,我想我这篇文章能够带你对这个模式有一个基础的认识.本文仅针对建造者模式的初学者分享.高手可以自行绕道.相信大家一定在平常编写代码的时候,遇到过builder模式,因为这个模式用起来非常简洁.几乎可以一句代码搞定需要设置的参数, 得到一个实例.大大的方便了使用者编写代码的速度.相信用过比较流行的网络框架,图片加载框架的童鞋,一定用过.">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?true";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">三颗柚子</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a target="_blank" href="/">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                    
+                    <a target="_blank" href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>文章</span>
+                    </a>
+                    
+                    <a target="_blank" href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>关于我</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        三颗柚子
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        天生我才必有用
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="三颗柚子" target="_blank" href="//blog.senjoeson.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/senjoeson">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="senjoeson@foxmail.com" target="_blank" href="mailTo://senjoeson@foxmail.com">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                        <a title="简书" target="_blank" href="https://www.jianshu.com/u/4b6dda4129b2">
+                            <i class="fa fa-heart fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-关于建造者模式-builder模式-学习心得" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      关于建造者模式(builder模式)学习心得
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/安卓学习笔记/">安卓学习笔记</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2017-08-30
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果你还对builder模式一无所知,还不知道如何去使用的话,我想我这篇文章能够带你对这个模式有一个基础的认识.本文仅针对建造者模式的初学者分享.高手可以自行绕道.相信大家一定在平常编写代码的时候,遇到过builder模式,因为这个模式用起来非常简洁.几乎可以一句代码搞定需要设置的参数, 得到一个实例.大大的方便了使用者编写代码的速度.相信用过比较流行的网络框架,图片加载框架的童鞋,一定用过.好了,下面我和大家一起分享我学习的经验.</p>
+<h2 id="学习这个模式的目的"><a href="#学习这个模式的目的" class="headerlink" title="学习这个模式的目的:"></a>学习这个模式的目的:</h2><p>学习之前,还是搞懂为什么要学这个模式?这个模式的作用是什么?<br>下面我举一个非常简单的例子,比如我需要创建一个Person对象,这个person对象中,我有很多个参数,比如:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"><span class="keyword">private</span> String birthday;</span><br><span class="line"><span class="keyword">private</span> String gender;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">double</span> height;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">double</span> weight;</span><br></pre></td></tr></table></figure></p>
+<p>如果我要一次性设置这么多的属性给person,你会不会发现是不是每一次都需要<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p1.setName(xxx);</span><br><span class="line">p1.setAge(xxx);</span><br><span class="line">~~~</span><br></pre></td></tr></table></figure></p>
+<p>目前可能就只有这么几个参数还好,如果参数多起来了呢?是不是感觉写的很烦?<br>因为我们学习builder可以为我们减少一些代码量.增加开发速度.<br>当然builder模式的作用不仅仅是在此,它还可以结合单利模式进行使用,对同一个对象的多个属性进行赋值.<br>但作为初学者学习,建议还是先把基础的知识学好,然后自己可以继续深入研究混合模式开发哦!<br>下面我们来正式开始学习吧!</p>
+<h2 id="进入正题-学习builder模式"><a href="#进入正题-学习builder模式" class="headerlink" title="进入正题(学习builder模式):"></a>进入正题(学习builder模式):</h2><p>我先给大家写一个完成建造者模式之后的写法,好让大家有个对比<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Person person = <span class="keyword">new</span> Person.PersonBuilder(<span class="number">1231</span>)</span><br><span class="line">               .setName(<span class="string">"张三"</span>)</span><br><span class="line">               .setAge(<span class="number">12</span>)</span><br><span class="line">               .setBirthday(<span class="string">"1998-01-04"</span>)</span><br><span class="line">               .setHeight(<span class="number">175</span>)</span><br><span class="line">               .setGender(<span class="string">"man"</span>)</span><br><span class="line">               .setWeight(<span class="number">60</span>)</span><br><span class="line">                .build();</span><br></pre></td></tr></table></figure></p>
+<p>大家其实可以观察一下,为什么可以连续去设置多个属性呢?是因为每次返回的都是同一个对象,那么底层做了什么逻辑呢?下面我贴出我的代码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="keyword">private</span> String birthday;</span><br><span class="line">    <span class="keyword">private</span> String gender;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> height;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> weight;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Person</span><span class="params">(PersonBuilder builder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = builder.id;</span><br><span class="line">        <span class="keyword">this</span>.name = builder.name;</span><br><span class="line">        <span class="keyword">this</span>.age = builder.age;</span><br><span class="line">        <span class="keyword">this</span>.birthday = builder.birthday;</span><br><span class="line">        <span class="keyword">this</span>.gender = builder.gender;</span><br><span class="line">        <span class="keyword">this</span>.height = builder.height;</span><br><span class="line">        <span class="keyword">this</span>.weight = builder.weight;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getBirthday</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> birthday;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getGender</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> gender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getHeight</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> height;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getWeight</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> weight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">PersonBuilder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> id;</span><br><span class="line">        <span class="keyword">private</span> String name;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">        <span class="keyword">private</span> String birthday;</span><br><span class="line">        <span class="keyword">private</span> String gender;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">double</span> height;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">double</span> weight;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">PersonBuilder</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.id = id;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> PersonBuilder <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = name;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> PersonBuilder <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.age = age;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> PersonBuilder <span class="title">setBirthday</span><span class="params">(String birthday)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.birthday = birthday;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> PersonBuilder <span class="title">setGender</span><span class="params">(String gender)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.gender = gender;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> PersonBuilder <span class="title">setHeight</span><span class="params">(<span class="keyword">double</span> height)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.height = height;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> PersonBuilder <span class="title">setWeight</span><span class="params">(<span class="keyword">double</span> weight)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.weight = weight;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Person <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Person(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面我给大家讲解一下,为什么要这么写?<br>首先我们肯定是要把需要创建那个对象空参构造方法给私有的!以便提供给PersonBuilder类使用.</p>
+<p>  我们所有设置属性的操作都是操作PersonBuilder,而不是直接操作Person,所以呢?我们需要在PersonBuilder类中创建与Person类中相同字段,操作了PersonBuilder类的属性,间接的操作了Person类的属性.</p>
+<p>而要同时达到返回的是同一个对象的话,在每个设置属性的方法返回的肯定是同一个对象,那么我们所有的属性都设置好了,就可以了么?</p>
+<p>肯定不行的,因为你现在还没有和Person类进行关联,所有还无法达到我们想要的效果.就好比,你建房子,你把材料都准备好了,没有修建也是不行的.因此,我们需要在build方法中创建一个Person实现连接.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Person <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Person(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们的简单的builder就已经构造完成了.希望大家能够从我的文章获得收获.</p>
+<p>最后感谢大家阅读本篇文章.!谢谢!</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2020年04月05日 20:13</p>
+        <p>原始链接： <a class="post-url" href="/2017/08/30/关于建造者模式-builder模式-学习心得/" title="关于建造者模式(builder模式)学习心得">http://blog.senjoeson.com/2017/08/30/关于建造者模式-builder模式-学习心得/</a></p>
+        <footer>
+            <a href="http://blog.senjoeson.com">
+                <img src="/images/logo.png" alt="三颗柚子">
+                三颗柚子
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我喝杯咖啡~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://blog.senjoeson.com/2017/08/30/关于建造者模式-builder模式-学习心得/&title=《关于建造者模式(builder模式)学习心得》 — 时光,稍纵即逝&pic=http://blog.senjoeson.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.senjoeson.com/2017/08/30/关于建造者模式-builder模式-学习心得/&title=《关于建造者模式(builder模式)学习心得》 — 时光,稍纵即逝&source=天生我才必有用" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.senjoeson.com/2017/08/30/关于建造者模式-builder模式-学习心得/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《关于建造者模式(builder模式)学习心得》 — 时光,稍纵即逝&url=http://blog.senjoeson.com/2017/08/30/关于建造者模式-builder模式-学习心得/&via=http://blog.senjoeson.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://blog.senjoeson.com/2017/08/30/关于建造者模式-builder模式-学习心得/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://blog.senjoeson.com/2017/08/30/关于建造者模式-builder模式-学习心得/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/安卓学习笔记/" class="color2">安卓学习笔记</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习这个模式的目的"><span class="post-toc-text">学习这个模式的目的:</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#进入正题-学习builder模式"><span class="post-toc-text">进入正题(学习builder模式):</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2017/09/01/学习观察者设计模式/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          学习观察者设计模式
+        
+      </span>
+    </a>
+  
+  
+</nav>
+
+
+
+    
+        <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+    <script src="https://billts.site/js/gitment.js"></script>
+    <div id="comments">
+        <script>
+            var gitment = new Gitment({
+                id: 'Wed Aug 30 2017 17:42:00 GMT+0800',
+                owner: 'senjoeson',
+                repo: 'senjoeson.github.io',
+                oauth: {
+                    client_id: '2b34b65aa0b25d96f85b',
+                    client_secret: '308846c5d6a6c2b73875a745d2cdab7da0de9867',
+                },
+            })
+            gitment.render('comments')
+        </script>
+    </div>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2020 三颗柚子<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://blog.senjoeson.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/前端学习笔记/">前端学习笔记</a><a class="category-link" href="/categories/后台学习笔记/">后台学习笔记</a><a class="category-link" href="/categories/安卓学习笔记/">安卓学习笔记</a><a class="category-link" href="/categories/小程序系列/">小程序系列</a><a class="category-link" href="/categories/问题收集栏/">问题收集栏</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/小程序系列/" style="font-size: 10px;">小程序系列</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a target="_blank" href="/">
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/archives">
+                    <i class="fa fa-archive"></i><span>文章</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/about">
+                    <i class="fa fa-user"></i><span>关于我</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/小程序系列/" style="font-size: 10px;">小程序系列</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

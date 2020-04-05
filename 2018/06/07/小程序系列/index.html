@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>小程序系列之初识小程序(1) | 时光,稍纵即逝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="记录某一个思想的沉淀">
+  
+  <meta name="description" content="前言作为一个Android开发来说,学习小程序其实是一件比较痛苦的事情. 因为本身没有前端基础的我,无法想象直接上手开发小程序是一种怎么样的体验, 但是事实就是,当公司需要你开发小程序,你不得不硬着头皮去学习,下面就来和大家分享一下 我学习小程序的过程以及心理历程吧.  写作&amp;lt;小程序系列&amp;gt;的目的当做一种想回忆的记录,把一些散乱的知识和记忆都整理在一起,希望在这个过程中能够让大家对学习小">
+<meta name="keywords" content="小程序系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序系列之初识小程序(1)">
+<meta property="og:url" content="http://blog.senjoeson.com/2018/06/07/小程序系列/index.html">
+<meta property="og:site_name" content="时光,稍纵即逝">
+<meta property="og:description" content="前言作为一个Android开发来说,学习小程序其实是一件比较痛苦的事情. 因为本身没有前端基础的我,无法想象直接上手开发小程序是一种怎么样的体验, 但是事实就是,当公司需要你开发小程序,你不得不硬着头皮去学习,下面就来和大家分享一下 我学习小程序的过程以及心理历程吧.  写作&amp;lt;小程序系列&amp;gt;的目的当做一种想回忆的记录,把一些散乱的知识和记忆都整理在一起,希望在这个过程中能够让大家对学习小">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:updated_time" content="2020-04-05T12:25:11.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小程序系列之初识小程序(1)">
+<meta name="twitter:description" content="前言作为一个Android开发来说,学习小程序其实是一件比较痛苦的事情. 因为本身没有前端基础的我,无法想象直接上手开发小程序是一种怎么样的体验, 但是事实就是,当公司需要你开发小程序,你不得不硬着头皮去学习,下面就来和大家分享一下 我学习小程序的过程以及心理历程吧.  写作&amp;lt;小程序系列&amp;gt;的目的当做一种想回忆的记录,把一些散乱的知识和记忆都整理在一起,希望在这个过程中能够让大家对学习小">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?true";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">三颗柚子</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a target="_blank" href="/">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                    
+                    <a target="_blank" href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>文章</span>
+                    </a>
+                    
+                    <a target="_blank" href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>关于我</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        三颗柚子
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        天生我才必有用
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="三颗柚子" target="_blank" href="//blog.senjoeson.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/senjoeson">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="senjoeson@foxmail.com" target="_blank" href="mailTo://senjoeson@foxmail.com">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                        <a title="简书" target="_blank" href="https://www.jianshu.com/u/4b6dda4129b2">
+                            <i class="fa fa-heart fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-小程序系列" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      小程序系列之初识小程序(1)
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/小程序系列/">小程序系列</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2018-06-07
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>作为一个Android开发来说,学习小程序其实是一件比较痛苦的事情.</p>
+<p>因为本身没有前端基础的我,无法想象直接上手开发小程序是一种怎么样的体验,</p>
+<p>但是事实就是,当公司需要你开发小程序,你不得不硬着头皮去学习,下面就来和大家分享一下</p>
+<p>我学习小程序的过程以及心理历程吧.</p>
+<hr>
+<h3 id="写作-lt-小程序系列-gt-的目的"><a href="#写作-lt-小程序系列-gt-的目的" class="headerlink" title="写作&lt;小程序系列&gt;的目的"></a>写作&lt;小程序系列&gt;的目的</h3><p>当做一种想回忆的记录,把一些散乱的知识和记忆都整理在一起,希望在这个过程中能够让大家对学习小程序有一些启发和帮助,也是自己总结学习知识之后的一种提炼能力吧.</p>
+<h3 id="小程序如何学起"><a href="#小程序如何学起" class="headerlink" title="小程序如何学起?"></a>小程序如何学起?</h3><blockquote>
+<p>1.首先花个1-2天时间仔细看一下<a href="https://developers.weixin.qq.com/miniprogram/dev/" target="_blank" rel="noopener">微信小程序开发文档</a>.<br>我看书有一个习惯,就是要带着问题或者目的去看,这样你看下来,你的疑惑也解开了,你的目的也达到了!如果大家对微信小程序还不是很了解,那么,我就给大家提几点问题,大家可以带着这几个问题,去看文档,基本弄懂这几个问题,会整个文档有一个大概的印象.</p>
+</blockquote>
+<h4 id="a-看微信小程序文档中的起步"><a href="#a-看微信小程序文档中的起步" class="headerlink" title="a. 看微信小程序文档中的起步"></a>a. 看<strong>微信小程序文档</strong>中的<strong>起步</strong></h4><pre><code>1.了解注册流程和发布流程
+2.了解微信小程序代码构成部分
+3.对微信小程序有一个初步认识
+</code></pre><h4 id="b-看小程序框架的组成部分"><a href="#b-看小程序框架的组成部分" class="headerlink" title="b. 看小程序框架的组成部分"></a>b. 看小程序框架的组成部分</h4><pre><code>1.项目中配置作用
+2.弄清楚在哪里写代码,在哪里写样式,熟悉语法
+3.弄懂登录机制,弄清楚如何获取用户信息(涉及到scope权限),巧获用户信息作为展示使用
+4.小程序具备能力(建议粗略看一遍)
+5.小程序生命周期与自定义组件等(建议粗略看一遍)
+</code></pre><h4 id="c-看组件部分"><a href="#c-看组件部分" class="headerlink" title="c.看组件部分"></a>c.看组件部分</h4><pre><code>1.了解基础组件并粗略查看使用方法
+2.重点搞清楚导航使用
+3.查看open-data控件使用
+4.web-view控件使用
+</code></pre><h4 id="API部分"><a href="#API部分" class="headerlink" title="API部分"></a>API部分</h4><pre><code>1.着重看路由部分,毕竟页面跳转需要经常使用
+2.界面部分大略过一遍
+</code></pre><ul>
+<li style="list-style: none"><input type="checkbox"> 个人体会(以下说法仅个人见解,不见得对):</li>
+<li>学习一个框架,不可能把每一个地方都去详细的看一遍,因为有些功能,我们根本用不到,也记不了那么多,所以我们只能捡重点部分和常用部分进行学习,其他部分只能说涉及到,然后进行学习和研究. </li>
+<li>学习当然不能一蹴而就,想短时间速成,方法当然也有,但是后遗症就是,基础不牢,根基不稳,如果想把小程序当做自己非常精通的一个技能,建议不要采用以上的方法.以上的方法仅适合快速开发,速成阶段.</li>
+<li>以上仅个人一些废话,完全可以忽略不计.</li>
+</ul>
+<h3 id="建议使用Taro小程序框架开发"><a href="#建议使用Taro小程序框架开发" class="headerlink" title="建议使用Taro小程序框架开发"></a>建议使用Taro小程序框架开发</h3><ul>
+<li><p>为什么使用Taro框架开发?</p>
+<p>  因为我们公司使用的技术栈是react,为了适应所有前端开发人员,使用此套框架可以让前端人员进行无缝对接,无须再适应其他语法.</p>
+</li>
+<li><p>使用Taro框架的好处</p>
+<p>  使用 Taro，我们可以只书写一套代码，再通过 Taro 的编译工具，将源代码分别编译出可以在不同端（微信/百度/支付宝/字节跳动/QQ小程序、快应用、H5、React-Native 等）运行的代码。</p>
+</li>
+<li><p>语法风格</p>
+<p> Taro 遵循 React 语法规范，它采用与 React 一致的组件化思想，组件生命周期与 React 保持一致，同时支持使用 JSX 语法，让代码具有更丰富的表现力，使用 Taro 进行开发可以获得和 React 一致的开发体验。</p>
+</li>
+</ul>
+<h4 id="预告"><a href="#预告" class="headerlink" title="预告"></a>预告</h4><p>我们后续将采用Taro框架作为基础,为大家介绍小程序开发,编写小程序系列文章.</p>
+<hr>
+<p>以上,如文章有错误之处,敬请指正,感谢各位.</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2020年04月05日 20:25</p>
+        <p>原始链接： <a class="post-url" href="/2018/06/07/小程序系列/" title="小程序系列之初识小程序(1)">http://blog.senjoeson.com/2018/06/07/小程序系列/</a></p>
+        <footer>
+            <a href="http://blog.senjoeson.com">
+                <img src="/images/logo.png" alt="三颗柚子">
+                三颗柚子
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我喝杯咖啡~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://blog.senjoeson.com/2018/06/07/小程序系列/&title=《小程序系列之初识小程序(1)》 — 时光,稍纵即逝&pic=http://blog.senjoeson.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.senjoeson.com/2018/06/07/小程序系列/&title=《小程序系列之初识小程序(1)》 — 时光,稍纵即逝&source=天生我才必有用" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.senjoeson.com/2018/06/07/小程序系列/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《小程序系列之初识小程序(1)》 — 时光,稍纵即逝&url=http://blog.senjoeson.com/2018/06/07/小程序系列/&via=http://blog.senjoeson.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://blog.senjoeson.com/2018/06/07/小程序系列/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://blog.senjoeson.com/2018/06/07/小程序系列/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/小程序系列/" class="color1">小程序系列</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#写作-lt-小程序系列-gt-的目的"><span class="post-toc-text">写作&lt;小程序系列&gt;的目的</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#小程序如何学起"><span class="post-toc-text">小程序如何学起?</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#a-看微信小程序文档中的起步"><span class="post-toc-text">a. 看微信小程序文档中的起步</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#b-看小程序框架的组成部分"><span class="post-toc-text">b. 看小程序框架的组成部分</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#c-看组件部分"><span class="post-toc-text">c.看组件部分</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#API部分"><span class="post-toc-text">API部分</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#建议使用Taro小程序框架开发"><span class="post-toc-text">建议使用Taro小程序框架开发</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#预告"><span class="post-toc-text">预告</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2018/06/07/hexo常用问题解决办法/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          关于hexo出现错误解决方法
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2018/06/06/学习React-Native/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">学习React Native</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+    <script src="https://billts.site/js/gitment.js"></script>
+    <div id="comments">
+        <script>
+            var gitment = new Gitment({
+                id: 'Thu Jun 07 2018 14:53:18 GMT+0800',
+                owner: 'senjoeson',
+                repo: 'senjoeson.github.io',
+                oauth: {
+                    client_id: '2b34b65aa0b25d96f85b',
+                    client_secret: '308846c5d6a6c2b73875a745d2cdab7da0de9867',
+                },
+            })
+            gitment.render('comments')
+        </script>
+    </div>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2020 三颗柚子<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://blog.senjoeson.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/前端学习笔记/">前端学习笔记</a><a class="category-link" href="/categories/后台学习笔记/">后台学习笔记</a><a class="category-link" href="/categories/安卓学习笔记/">安卓学习笔记</a><a class="category-link" href="/categories/小程序系列/">小程序系列</a><a class="category-link" href="/categories/问题收集栏/">问题收集栏</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/小程序系列/" style="font-size: 10px;">小程序系列</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a target="_blank" href="/">
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/archives">
+                    <i class="fa fa-archive"></i><span>文章</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/about">
+                    <i class="fa fa-user"></i><span>关于我</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/小程序系列/" style="font-size: 10px;">小程序系列</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>

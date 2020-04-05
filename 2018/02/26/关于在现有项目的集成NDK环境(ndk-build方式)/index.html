@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>关于在现有项目的集成NDK环境(ndk-build方式) | 时光,稍纵即逝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="记录某一个思想的沉淀">
+  
+  <meta name="description" content="前言  最近比较空闲,就想摸索学习下JNI开发.现在行业竞争越来越激烈,JNI开发我们在面试上,遇见的频率还算是挺高的,因此,非常有必要去学习和钻研这个比较重要的技术的! 经过我多次的摸索,新建了N次项目,终于成功手动的实现了在原有的项目上集成NDK开发环境,下面把我自己的经验分享给大家(我在网上搜索了一圈,看了很多篇文章都没有找到一个能够完全的解决我的问题的文章)  如果你现在有空的话,不妨打开">
+<meta name="keywords" content="安卓学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于在现有项目的集成NDK环境(ndk-build方式)">
+<meta property="og:url" content="http://blog.senjoeson.com/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/index.html">
+<meta property="og:site_name" content="时光,稍纵即逝">
+<meta property="og:description" content="前言  最近比较空闲,就想摸索学习下JNI开发.现在行业竞争越来越激烈,JNI开发我们在面试上,遇见的频率还算是挺高的,因此,非常有必要去学习和钻研这个比较重要的技术的! 经过我多次的摸索,新建了N次项目,终于成功手动的实现了在原有的项目上集成NDK开发环境,下面把我自己的经验分享给大家(我在网上搜索了一圈,看了很多篇文章都没有找到一个能够完全的解决我的问题的文章)  如果你现在有空的话,不妨打开">
+<meta property="og:locale" content="zh-hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-9f2ee12f77f42acb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-9834f3579ae1a2e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-be5482bfed2afead.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-a1d94ca24e254d79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-acf487910df5b7ff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-27c91bae3753ed7f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-994c9bb8bdf7955a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-b1ba9196914e97f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-5b274114e0a279d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-112247e869b65547.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-da0f3dfaa3d409bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-cc41c2a734c68315.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-aef171dbb3cc6430.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-99bfaf2044e697e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-d59bb50070809795.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-a22625b4e476d303.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-f1e0e2b00f8fb29f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6693498-e5ce95234fef9b88.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2020-04-05T12:13:44.828Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于在现有项目的集成NDK环境(ndk-build方式)">
+<meta name="twitter:description" content="前言  最近比较空闲,就想摸索学习下JNI开发.现在行业竞争越来越激烈,JNI开发我们在面试上,遇见的频率还算是挺高的,因此,非常有必要去学习和钻研这个比较重要的技术的! 经过我多次的摸索,新建了N次项目,终于成功手动的实现了在原有的项目上集成NDK开发环境,下面把我自己的经验分享给大家(我在网上搜索了一圈,看了很多篇文章都没有找到一个能够完全的解决我的问题的文章)  如果你现在有空的话,不妨打开">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/6693498-9f2ee12f77f42acb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?true";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">三颗柚子</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a target="_blank" href="/">
+                        <i class="fa fa-home"></i>
+                        <span>首页</span>
+                    </a>
+                    
+                    <a target="_blank" href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>文章</span>
+                    </a>
+                    
+                    <a target="_blank" href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>关于我</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        三颗柚子
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        天生我才必有用
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="三颗柚子" target="_blank" href="//blog.senjoeson.com">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/senjoeson">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="senjoeson@foxmail.com" target="_blank" href="mailTo://senjoeson@foxmail.com">
+                            <i class="fa fa-qq fa-2x"></i></a>
+                    
+                        <a title="简书" target="_blank" href="https://www.jianshu.com/u/4b6dda4129b2">
+                            <i class="fa fa-heart fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-关于在现有项目的集成NDK环境(ndk-build方式)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      关于在现有项目的集成NDK环境(ndk-build方式)
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/安卓学习笔记/">安卓学习笔记</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2018-02-26
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p> 最近比较空闲,就想摸索学习下JNI开发.现在行业竞争越来越激烈,JNI开发我们在面试上,遇见的频率还算是挺高的,因此,非常有必要去学习和钻研这个比较重要的技术的!</p>
+<p>经过我多次的摸索,新建了N次项目,终于成功手动的实现了在原有的项目上集成NDK开发环境,下面把我自己的经验分享给大家(我在网上搜索了一圈,看了很多篇文章都没有找到一个能够完全的解决我的问题的文章)</p>
+<p> 如果你现在有空的话,不妨打开AS,跟我一起来学习如何配置NDK开发环境吧!!!</p>
+<hr>
+<h2 id="第一步-创建一个新的项目-这里不要勾选include-c-support"><a href="#第一步-创建一个新的项目-这里不要勾选include-c-support" class="headerlink" title="第一步 : 创建一个新的项目.(这里不要勾选include c++ support)"></a>第一步 : 创建一个新的项目.(这里不要勾选include c++ support)</h2><h2 id="第二步-集成NDK环境"><a href="#第二步-集成NDK环境" class="headerlink" title="第二步 :集成NDK环境"></a>第二步 :集成NDK环境</h2><pre><code>准备工作:
+首先确认下AS有没有下载过NDK插件
+确认方式:打开你的项目设置(按ctrl+ alt +shift +s)
+如果目录是空的.下面应该有提示让你去下载的.你点击下载等待下载完毕重启AS即可.
+当你看到这个地方,我就默认你已经下载好了NDK,并且和我的步骤是同步的!
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6693498-9f2ee12f77f42acb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="确认ndk是否配置.png"></p>
+<h2 id="对项目进行一些细节设置"><a href="#对项目进行一些细节设置" class="headerlink" title="对项目进行一些细节设置"></a>对项目进行一些细节设置</h2><ul>
+<li>1.gradle.properties文件的最后一行增加 android.useDeprecatedNdk=true<br><img src="http://upload-images.jianshu.io/upload_images/6693498-9834f3579ae1a2e0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+<li>2.在module级别的build.gradle中这样设置 ,然后rebuild一下 就OK了<br><img src="http://upload-images.jianshu.io/upload_images/6693498-be5482bfed2afead.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+<h2 id="第三步-创建一个Java类-写上一个native方法"><a href="#第三步-创建一个Java类-写上一个native方法" class="headerlink" title="第三步:创建一个Java类 写上一个native方法"></a>第三步:创建一个Java类 写上一个native方法</h2><ul>
+<li>从下图,我们可以看出,这个方法是爆红的,看下面的提示,大致意思就是该方法无法被识别或解析,说明我们的工作还没有完成.<br><img src="http://upload-images.jianshu.io/upload_images/6693498-a1d94ca24e254d79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ul>
+<h2 id="第四步-在Terminal命令行下-执行以下切换目录"><a href="#第四步-在Terminal命令行下-执行以下切换目录" class="headerlink" title="第四步:在Terminal命令行下,执行以下切换目录"></a>第四步:在Terminal命令行下,执行以下切换目录</h2><p>   <strong><em>cd /d ./app/src/main/java</em></strong><br><img src="http://upload-images.jianshu.io/upload_images/6693498-acf487910df5b7ff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="第五步-编译生成该类中的C-C-文件-如下所示-↙有备注哦-完成之后rebuild一下"><a href="#第五步-编译生成该类中的C-C-文件-如下所示-↙有备注哦-完成之后rebuild一下" class="headerlink" title="第五步:编译生成该类中的C/C++文件(如下所示) [↙有备注哦] ,完成之后rebuild一下"></a>第五步:编译生成该类中的C/C++文件(如下所示) [↙有备注哦] ,完成之后rebuild一下</h2><p><strong>[备注:如果是第一次阅读的话,请先留意一下后期补充]</strong></p>
+<p>  同样使用命令行执行 <strong><em>javah -d ../jni cn.senjoeson.studyndk.Hello</em></strong>      编译生成该类中的C++/C文件</p>
+<pre><code> -d表示创建一个目录
+../jni  需要创建的目录  
+ cn.senjoeson.studyndk.Hello表示编译生成该类
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/6693498-27c91bae3753ed7f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="此图为后期补上的.png"></p>
+<p>关于如何更加方便使用以上的命令,请参考我在网上找的一篇文章,希望可以帮助大家除去每次手动执行命令的烦恼!<br> <a href="http://blog.csdn.net/sinat_21468979/article/details/70770135" target="_blank" rel="noopener">Android Studio配置NDK外部命令工具</a></p>
+<h2 id="第六步-解决rebuild后报的错误"><a href="#第六步-解决rebuild后报的错误" class="headerlink" title="第六步,解决rebuild后报的错误"></a>第六步,解决rebuild后报的错误</h2><p>别慌,也别急着去百度,它其实就是告诉你,使用了过时的ndk,无法兼容.下面按照我说的做,可以解决这个问题.<br><img src="http://upload-images.jianshu.io/upload_images/6693498-994c9bb8bdf7955a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<ul>
+<li>1.先选中你所在的module,右键之后如下所示</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-b1ba9196914e97f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<ul>
+<li>2.点击Link C++ Project with Gradle按钮 会弹出下面的对话框.</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-5b274114e0a279d4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>  我们是选择Ndk-build的,但是你翻来找去,你压根没有发现所谓的Android.mk,<br>  是不是心里在嘀咕,这不是坑爹么? 哈哈.我当时就是这么想的!!后来,我观察了下自动生成的这个目录</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-112247e869b65547.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>  是不是心里在想 这是不是有什么关联呢? OK.你猜对了 ,我当时就是觉得这个有可能就是它要找的那个文件,所以我把它复制到项目的根目录了!!  </p>
+<ul>
+<li>3.复制Android.mk文件到项目根目录</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-da0f3dfaa3d409bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<ul>
+<li><ol start="4">
+<li>填入Android.mk的路径并点击OK<br><img src="http://upload-images.jianshu.io/upload_images/6693498-cc41c2a734c68315.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></li>
+</ol>
+<p>这个时候,项目会进行重新编译.就可以解决以上报的错误,</p>
+</li>
+</ul>
+<h2 id="第七步-修改Andriod-mk的LOCAL-SRC-FILES路径"><a href="#第七步-修改Andriod-mk的LOCAL-SRC-FILES路径" class="headerlink" title="第七步:修改Andriod.mk的LOCAL_SRC_FILES路径"></a>第七步:修改Andriod.mk的LOCAL_SRC_FILES路径</h2><p>重新编译之后我们再次打开Hello类,你发现它的native方法依然是爆红的,<br>    这可咋办啊?我当时也是卡在这个地方,找遍了方法,我感觉可能我哪个地方搞错了!!<br>    我一遍遍排查,找文档,查资料,最后将问题定位在Android.mk文件上(如下图所示),此处是关联C++源码文件(为了实现这个native方法),<br><img src="http://upload-images.jianshu.io/upload_images/6693498-aef171dbb3cc6430.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>那么我们就创建一个C++文件,然后把Android.mk的路径修改一下</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-99bfaf2044e697e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>  然后重新编译,你是不是发现你再次打开.h文件的时候,字体颜色都不一样了么?</p>
+<h2 id="第八步-在Hello-cpp文件中实现这个native方法"><a href="#第八步-在Hello-cpp文件中实现这个native方法" class="headerlink" title="第八步: 在Hello.cpp文件中实现这个native方法."></a>第八步: 在Hello.cpp文件中实现这个native方法.</h2><p>把下面这个文件的内容全部复制到刚刚新建的Hello.cpp文件中<br><img src="http://upload-images.jianshu.io/upload_images/6693498-d59bb50070809795.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>我们这里就简单的输出一个语句(其实难的我也不会.哈哈)<br><img src="http://upload-images.jianshu.io/upload_images/6693498-a22625b4e476d303.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>我们再次打开Hello类,你会发现那个native方法已经不再爆红.说明我们已经集成成功了!</p>
+<h2 id="第九步-在Java代码中引入库"><a href="#第九步-在Java代码中引入库" class="headerlink" title="第九步.在Java代码中引入库."></a>第九步.在Java代码中引入库.</h2><p>   我们需要加载库才能让Java代码能够识别C++代码<br><img src="http://upload-images.jianshu.io/upload_images/6693498-f1e0e2b00f8fb29f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<hr>
+<p>   注意事项:<br>   我在上图标注的地方表明需要两者要一样,不然可能报错.<br>   最后我们让该方法使用并让程序跑起来</p>
+<hr>
+<p><img src="http://upload-images.jianshu.io/upload_images/6693498-e5ce95234fef9b88.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>如果你还有兴趣想了解关于在现有项目的集成NDK环境(Cmake方式),请戳<a href="http://www.senjoeson.xyz/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式" target="_blank" rel="noopener">关于在现有项目的集成NDK环境(Cmake方式)</a>/)</p>
+<p>如果以上文章能够帮助到你,请帮我点击一下喜欢,非常感谢!<br>文章可能有写的不好的地方,如有不妥之处,请联系我纠正!谢谢大家!</p>
+<h2 id="后期补充"><a href="#后期补充" class="headerlink" title="后期补充:"></a>后期补充:</h2><p>根据我后面自己多次测试,发现在第五步的时候,编译生成该类的C/C++文件之后,直接创建实现该方法的C++文件,然后rebuild,就不需要手动去修改Android.mk里面的LOCAL_SRC_FILES路径了,它会直接自动生成.</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2020年04月05日 20:13</p>
+        <p>原始链接： <a class="post-url" href="/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/" title="关于在现有项目的集成NDK环境(ndk-build方式)">http://blog.senjoeson.com/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/</a></p>
+        <footer>
+            <a href="http://blog.senjoeson.com">
+                <img src="/images/logo.png" alt="三颗柚子">
+                三颗柚子
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+        
+            
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;">赏</a>
+</div>
+
+<div id="reward" class="post-modal reward-lay">
+    <a class="close" href="javascript:;" id="reward-close">×</a>
+    <span class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        请我喝杯咖啡~
+        <i class="icon icon-quote-right"></i>
+    </span>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat_code.jpg" alt="打赏二维码">
+        </div>
+        <div class="reward-select">
+            
+            <label class="reward-select-item checked" data-id="wechat" data-wechat="/images/wechat_code.jpg">
+                <img class="reward-select-item-wechat" src="/images/wechat.png" alt="微信">
+            </label>
+            
+            
+            <label class="reward-select-item" data-id="alipay" data-alipay="/images/alipay_code.jpg">
+                <img class="reward-select-item-alipay" src="/images/alipay.png" alt="支付宝">
+            </label>
+            
+        </div>
+    </div>
+</div>
+
+
+        
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://blog.senjoeson.com/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/&title=《关于在现有项目的集成NDK环境(ndk-build方式)》 — 时光,稍纵即逝&pic=http://blog.senjoeson.comimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://blog.senjoeson.com/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/&title=《关于在现有项目的集成NDK环境(ndk-build方式)》 — 时光,稍纵即逝&source=天生我才必有用" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.senjoeson.com/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《关于在现有项目的集成NDK环境(ndk-build方式)》 — 时光,稍纵即逝&url=http://blog.senjoeson.com/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/&via=http://blog.senjoeson.com" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://blog.senjoeson.com/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://blog.senjoeson.com/2018/02/26/关于在现有项目的集成NDK环境(ndk-build方式)/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/安卓学习笔记/" class="color2">安卓学习笔记</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第一步-创建一个新的项目-这里不要勾选include-c-support"><span class="post-toc-text">第一步 : 创建一个新的项目.(这里不要勾选include c++ support)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第二步-集成NDK环境"><span class="post-toc-text">第二步 :集成NDK环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#对项目进行一些细节设置"><span class="post-toc-text">对项目进行一些细节设置</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第三步-创建一个Java类-写上一个native方法"><span class="post-toc-text">第三步:创建一个Java类 写上一个native方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第四步-在Terminal命令行下-执行以下切换目录"><span class="post-toc-text">第四步:在Terminal命令行下,执行以下切换目录</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第五步-编译生成该类中的C-C-文件-如下所示-↙有备注哦-完成之后rebuild一下"><span class="post-toc-text">第五步:编译生成该类中的C/C++文件(如下所示) [↙有备注哦] ,完成之后rebuild一下</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第六步-解决rebuild后报的错误"><span class="post-toc-text">第六步,解决rebuild后报的错误</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第七步-修改Andriod-mk的LOCAL-SRC-FILES路径"><span class="post-toc-text">第七步:修改Andriod.mk的LOCAL_SRC_FILES路径</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第八步-在Hello-cpp文件中实现这个native方法"><span class="post-toc-text">第八步: 在Hello.cpp文件中实现这个native方法.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第九步-在Java代码中引入库"><span class="post-toc-text">第九步.在Java代码中引入库.</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#后期补充"><span class="post-toc-text">后期补充:</span></a></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2018/03/02/关于在现有项目的集成NDK环境(Cmake方式)/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          关于在现有项目的集成NDK环境(Cmake方式)
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2018/02/05/如何用Idea配置最基本的web项目/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">如何用Idea配置最基本的web项目</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+        <link rel="stylesheet" href="//unpkg.com/gitment/style/default.css">
+    <script src="//unpkg.com/gitment/dist/gitment.browser.js"></script>
+    <link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+    <script src="https://billts.site/js/gitment.js"></script>
+    <div id="comments">
+        <script>
+            var gitment = new Gitment({
+                id: 'Mon Feb 26 2018 15:03:00 GMT+0800',
+                owner: 'senjoeson',
+                repo: 'senjoeson.github.io',
+                oauth: {
+                    client_id: '2b34b65aa0b25d96f85b',
+                    client_secret: '308846c5d6a6c2b73875a745d2cdab7da0de9867',
+                },
+            })
+            gitment.render('comments')
+        </script>
+    </div>
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2020 三颗柚子<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://blog.senjoeson.com",
+      animate: true,
+      isHome: false,
+      share: true,
+      reward: 1
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/前端学习笔记/">前端学习笔记</a><a class="category-link" href="/categories/后台学习笔记/">后台学习笔记</a><a class="category-link" href="/categories/安卓学习笔记/">安卓学习笔记</a><a class="category-link" href="/categories/小程序系列/">小程序系列</a><a class="category-link" href="/categories/问题收集栏/">问题收集栏</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/小程序系列/" style="font-size: 10px;">小程序系列</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a target="_blank" href="/">
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/archives">
+                    <i class="fa fa-archive"></i><span>文章</span>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_blank" href="/about">
+                    <i class="fa fa-user"></i><span>关于我</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/前端学习笔记/" style="font-size: 15px;">前端学习笔记</a> <a href="/tags/后台学习笔记/" style="font-size: 10px;">后台学习笔记</a> <a href="/tags/安卓学习笔记/" style="font-size: 20px;">安卓学习笔记</a> <a href="/tags/小程序系列/" style="font-size: 10px;">小程序系列</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+
+  <script src="/js/pop-img.js"></script>
+  <script>
+     $(".article-entry p img").popImg();
+  </script>
+
+  </div>
+</body>
+</html>
